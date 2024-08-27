@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { IUser } from './users.model';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -12,6 +13,7 @@ export class UsersController {
         return this.usersService.createUser(user)
     }
 
+    @UseGuards(AuthGuard)
     @Get('/')
     getAll() {
         return this.usersService.getUsers()
