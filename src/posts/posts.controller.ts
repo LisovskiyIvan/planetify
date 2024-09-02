@@ -11,8 +11,8 @@ export class PostsController {
 
     @UseGuards(AuthGuard)
     @Get('/:id')
-    getAll(@Param() id: string) {
-        return this.postsService.getAllPostsByUserId(parseInt(id))
+    getAll(@Param() params: {id: string}) {
+        return this.postsService.getAllPostsByUserId(parseInt(params.id))
     }
 
 
