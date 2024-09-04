@@ -1,13 +1,16 @@
-import { Button } from "./Components/ui/button"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { Home } from "./pages/Home"
 
 function App() {
 
 
   return (
     <>
-      <div className="text-3xl">
-        <Button>qewqweq</Button>
-      </div>
+     <BrowserRouter>
+      <Routes>
+        <Route index element={<Home />} />
+      </Routes>
+    </BrowserRouter>
     </>
   )
 }
