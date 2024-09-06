@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 
 
-export const Navbar = () => {
+export default function Navbar  () {
 
     const [user, setUser] = useState('')
 
