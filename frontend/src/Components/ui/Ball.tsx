@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { useRef, useState, useMemo, useEffect, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Billboard, Text, TrackballControls } from '@react-three/drei'
-import { generate } from 'random-words'
 import { useWords } from '@/hooks/useWords'
 
 
@@ -23,9 +22,9 @@ function Word({ children, ...props }) {
   // Tie component to the render-loop
   useFrame(({ camera }) => {
     wordRef.current.material.color.lerp(color.set(hovered ? '#fa2720' : 'white'), 0.1)
-    wordRef.current.scale.x = 1.5
-    wordRef.current.scale.y = 1.5
-    wordRef.current.scale.z = 1.5
+    wordRef.current.scale.x = 1
+    wordRef.current.scale.y = 1
+    wordRef.current.scale.z = 1
   
   })
   return (
@@ -56,10 +55,10 @@ function Rotation() {
 
   useFrame(()=> {
     setRotationY((rotationY + 0.002) % (Math.PI ))
-    setRotationX((rotationX + 0.002) % (Math.PI ))
+    setRotationX((rotationX + 0.001) % (Math.PI ))
   })
   return(
-    <group rotation={[rotationX, 0, rotationY]}>
+    <group rotation={[rotationX, 0, rotationY]} >
           <Cloud count={8} radius={20}  />
     </group>
   )
@@ -68,7 +67,7 @@ function Rotation() {
 export default function Ball() {
   
   return (
-    <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 35], fov: 90 }}>
+    <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 35], fov: 70 }}>
       <fog attach="fog" args={['#202025', 0, 80]} />
       <Suspense fallback={null}>
         <Rotation></Rotation>

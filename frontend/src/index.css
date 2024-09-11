@@ -64,3 +64,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+.rubik {
+  font-family: "Rubik", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+.raleway {
+  font-family: "Raleway", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}

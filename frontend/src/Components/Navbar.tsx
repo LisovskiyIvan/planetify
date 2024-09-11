@@ -26,31 +26,15 @@ export default function Navbar  () {
           </Link>
           <Link
                 className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl lg:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
-                to="/addwords"
+                to="/prices"
               >
-                Pricing
+                Цены
               </Link>
-          {user && (
-            <>
-              <Link
-                className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl lg:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
-                to="/addwords"
-              >
-                Add
-              </Link>
-              <Link
-                className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl lg:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
-                to="/learn"
-              >
-                Learn
-              </Link>
-            </>
-          )}
           <Link
             className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl lg:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
             to="/about"
           >
-            About
+            О нас
           </Link>
         </div>
         <div className="flex items-center">
@@ -63,7 +47,7 @@ export default function Navbar  () {
               className="mr-15 text-sm sm:text-lg mr-6 lg:text-xl 2xl:text-2xl 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
               to="/signup"
             >
-              Sign up
+              Войти
             </Link>
           )}
         </div>
