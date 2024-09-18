@@ -18,17 +18,26 @@ model User {
   id    Int     @id @default(autoincrement())
   username String  @unique
   password  String 
-  posts     Post[] 
+  projects     Project[] 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+}
+
+model Project {
+  id    Int     @id @default(autoincrement())
+  title String  
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  posts Post[] 
 }
 
 model Post {
   id        Int      @id @default(autoincrement())
   title     String
   content   String
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+  projects    Project     @relation(fields: [projectsId], references: [id])
+  projectsId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
