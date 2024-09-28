@@ -1,27 +1,54 @@
 import { FormEvent, useState } from "react";
 import { Button } from "./ui/button";
+import { useNavigate } from "react-router-dom";
 
-export default function SignupForm() {
+interface IResponse {
+  token: string,
+  id: string,
+  username: string
+  error?: string
+}
+
+interface Props {
+  url: string,
+  btnName: string
+}
+
+
+export default function SignupForm({url, btnName}: Props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState('')
+  const navigate = useNavigate();
 
-  
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const res = await fetch(`http://localhost:8081/user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "username": name,
-        "password": password
-      })
-    }).then(res => res.json())
+
+    try {
+      const res: IResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          "username": name,
+          "password": password
+        })
+      }).then(res => res.json())
+      if(res.error) {
+        setError(res.error)
+        return
+      }
+      setError('')
+      localStorage.setItem('token', res.token)
+      localStorage.setItem('id', res.id)
+      localStorage.setItem('username', res.username)
+      navigate('/')
+    } catch (e) {
+      console.log(e)
+    }
     
-    
-    // Здесь должна быть логика валидации и отправки данных
   };
 
   return (
@@ -64,8 +91,9 @@ export default function SignupForm() {
           type="submit"
           className=" w-[70%] text-2xl flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium text-white  bg-blue-600 hover:bg-blue-700 hover:scale-105 duration-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Регистрация
+          {btnName}
         </Button>
+        <div className="mt-4">{error}</div>
       </div>
     </form>
   );

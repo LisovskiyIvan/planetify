@@ -18,7 +18,8 @@ model User {
   id    Int     @id @default(autoincrement())
   username String  @unique
   password  String 
-  projects     Project[] 
+  projects     Project[]  
+  paid_user Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
@@ -27,7 +28,7 @@ model User {
 model Project {
   id    Int     @id @default(autoincrement())
   title String  
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
   posts Post[] 
 }
@@ -36,8 +37,9 @@ model Post {
   id        Int      @id @default(autoincrement())
   title     String
   content   String
-  projects    Project     @relation(fields: [projectsId], references: [id])
-  projectsId  Int
+  project    Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId  Int
+  status String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

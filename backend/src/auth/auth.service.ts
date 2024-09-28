@@ -23,7 +23,14 @@ export class AuthService {
     }
     
     async register(userDto: IUser){
-        if(await this.userService.getUserByName(userDto.username)) throw new HttpException('Такой пользователь уже существует', HttpStatus.BAD_REQUEST)
+        if(await this.userService.getUserByName(userDto.username)) {
+            return {
+                token: '',
+                username: '',
+                id: '',
+                error: 'Такой пользователь уже существует'
+            }
+        }
 
         const hashedPassword = await bcrypt.hash(userDto.password, 5)
         const user = await this.userService.createUser({username: userDto.username, password: hashedPassword})
@@ -34,7 +41,7 @@ export class AuthService {
             return {
                 token: this.jwtService.sign(payload),
                 username: userDto.username,
-                id: userDto.id
+                id: userDto.id.toString()
             }
         }
 }
