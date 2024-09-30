@@ -34,7 +34,7 @@ export function User() {
   useEffect(() => {
     async function getData() {
       if(!token) return
-      const data = await fetch(`http://localhost:3000/projects/${id}`, {
+      const data = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/${id}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -70,13 +70,13 @@ export function User() {
     setTrigger(prev => !prev)
   }
   return (
-    <div className="w-[100vw] min-h-[100dvh]">
+    <div className="w-[100vw] min-h-[100dvh] bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-500">
       <Navbar></Navbar>
       <div className=" items-center flex flex-col">
         {data?.map((value) => {
           return <Task data={value}  key={value.id} trigger={triggerRerender} togglePostModal={togglePostModal} getProjectId={handleProjectId}/>;
         })}
-        <Button className="text-lg hover:scale-110 duration-300 transition-all mb-10" onClick={toggleProjectModal} >Добавить</Button>
+        <Button className="text-lg hover:scale-110 duration-300 transition-all mt-5 mb-10" onClick={toggleProjectModal} >Добавить</Button>
       </div>
       <CreateProjectModal isOpen={projectModal} onClose={toggleProjectModal} trigger={triggerRerender}></CreateProjectModal>
       <CreatePostModal isOpen={postModal} onClose={togglePostModal} trigger={triggerRerender} projectId={projectId}></CreatePostModal>

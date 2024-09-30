@@ -93,7 +93,7 @@ export default function SignupForm({url, btnName}: Props) {
         >
           {btnName}
         </Button>
-        <div className="mt-4">{error}</div>
+        <div className="mt-4 text-center">{error}</div>
       </div>
     </form>
   );

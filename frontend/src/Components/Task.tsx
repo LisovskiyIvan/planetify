@@ -32,7 +32,7 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
   async function deleteProject() {
     if (!token) return;
 
-    const res = await fetch(`http://localhost:3000/projects/${data.id}`, {
+    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/${data.id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -50,7 +50,7 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
   async function deletePost(id: number | undefined) {
     if (!id) return;
     if (!token) return;
-    const res = await fetch(`http://localhost:3000/projects/post/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/post/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

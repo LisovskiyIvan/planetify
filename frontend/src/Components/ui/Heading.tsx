@@ -12,15 +12,15 @@ export function Heading() {
       <p className=" text-3xl font-bold raleway mb-10">
         Пусть мысли и задачи всегда будут на своих орбитах
       </p>
-      <div className="">
+      <div className="flex flex-col">
         <Link to={user ? `/user/${user}` : '/signup'}>
-        <Button className="text-2xl p-5 mx-5 hover:scale-110 duration-500 transition-all">
+        <Button className="text-2xl p-5 mx-5 my-1 hover:scale-110 duration-500 transition-all">
           {user ? 'К задачам' : 'Опробовать'}
         </Button>
         </Link>
         
         <Link to={'/about'}>
-        <Button className="text-2xl p-5 mx-5 hover:scale-110 duration-500 transition-all">
+        <Button className="text-2xl p-5 mx-5 my-1 hover:scale-110 duration-500 transition-all">
           О нас
         </Button>
         </Link>

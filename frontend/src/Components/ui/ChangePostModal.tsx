@@ -34,7 +34,7 @@ export function ChangePostModal({ onClose, post,  trigger}: Props){
     } else setError(false);
 
 
-    const res = await fetch("http://localhost:3000/projects/post", {
+    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/post`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

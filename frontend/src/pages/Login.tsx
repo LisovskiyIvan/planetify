@@ -5,7 +5,7 @@ import SignupForm from "@/Components/SingupForm";
 
 export function Login() {
 
-    const url = "http://localhost:3000/auth/login"
+    const url = `${import.meta.env.VITE_DEV_URL}/auth/login`
 
     return(
         <div className="w-[100%] min-h-[100dvh]">

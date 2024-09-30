@@ -45,7 +45,7 @@ export function CreatePostModal({
     if (id) id = parseInt(id);
     else return;
 
-    const res = await fetch("http://localhost:3000/projects/create/post", {
+    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/create/post`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
