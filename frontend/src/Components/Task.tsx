@@ -3,6 +3,7 @@ import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/button";
 import { ChangePostModal } from "./ui/ChangePostModal";
+import { motion } from "framer-motion";
 
 interface Props {
   data: IData;
@@ -26,18 +27,21 @@ interface IData {
 export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
   const [token] = useState(localStorage.getItem("token"));
   const [deleteModal, setDeleteModal] = useState(false);
-  const [changeModal, setChangeModal] = useState(false)
+  const [changeModal, setChangeModal] = useState(false);
   const [postData, setPostData] = useState<IPost>();
 
   async function deleteProject() {
     if (!token) return;
 
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/${data.id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((r) => r.json());
+    const res = await fetch(
+      `${import.meta.env.VITE_DEV_URL}/projects/${data.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    ).then((r) => r.json());
     trigger();
 
     if (!res) return;
@@ -50,12 +54,15 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
   async function deletePost(id: number | undefined) {
     if (!id) return;
     if (!token) return;
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/post/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((r) => r.json());
+    const res = await fetch(
+      `${import.meta.env.VITE_DEV_URL}/projects/post/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    ).then((r) => r.json());
     trigger();
 
     if (!res) return;
@@ -114,7 +121,10 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
                 </Badge>
               </div>
               <div className="flex">
-                <div className="text-2xl hover:scale-110 duration-300 cursor-pointer" onClick={()=>changePostModal(value)}>
+                <div
+                  className="text-2xl hover:scale-110 duration-300 cursor-pointer"
+                  onClick={() => changePostModal(value)}
+                >
                   &#9997;
                 </div>
                 <div
@@ -137,7 +147,16 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
         </div>
       </CardContent>
       {deleteModal && (
-        <div className="fixed top-[35%] bottom-[35%] left-[10%] right-[10%] bg-white text-black rounded-2xl flex items-center justify-center z-1000">
+        <motion.div
+          className="fixed top-[35%] bottom-[35%] left-[10%] right-[10%] bg-white text-black rounded-2xl flex items-center justify-center z-1000"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+          }}
+        >
           <div className="flex flex-col">
             <h1 className="text-center text-2xl mb-5 px-2">
               Удалить задачу {postData?.title}?
@@ -152,14 +171,23 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
               >
                 Да
               </Button>
-              <Button className="mx-2 w-16" onClick={() => setDeleteModal(false)}>
+              <Button
+                className="mx-2 w-16"
+                onClick={() => setDeleteModal(false)}
+              >
                 Нет
               </Button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
-      {changeModal && <ChangePostModal onClose={setChangeModal} post={postData} trigger={trigger}/>}
+      {changeModal && (
+        <ChangePostModal
+          onClose={setChangeModal}
+          post={postData}
+          trigger={trigger}
+        />
+      )}
     </Card>
   );
 }

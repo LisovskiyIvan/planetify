@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  trigger: () => void
+  trigger: () => void;
 }
 
 export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
@@ -13,46 +14,50 @@ export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
   }
 
   const [title, setTitle] = useState("");
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const [token] = useState(localStorage.getItem("token"));
-  
-
 
   async function createProject() {
-    if(!token) return
-    if(title.length < 5) {
-      setError(true)
-      return
+    if (!token) return;
+    if (title.length < 5) {
+      setError(true);
+      return;
     }
-    let id: number | string | null = localStorage.getItem("id")
+    let id: number | string | null = localStorage.getItem("id");
 
-
-    if(id) id = parseInt(id) 
-    else return
+    if (id) id = parseInt(id);
+    else return;
 
     const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/create`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json"
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         userId: id,
-        title: title
-      })
-    }).then(res => res.json())
-    
-    if(res) {
-      trigger()
-      onClose()
+        title: title,
+      }),
+    }).then((res) => res.json());
+
+    if (res) {
+      trigger();
+      onClose();
     }
-    
-    
   }
 
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 bg-black  flex items-center justify-center z-1000" >
-      <div className="w-[95%]  rounded-md bg-white mt-[15px] text-white relative flex flex-col items-center">
+    <div className="fixed top-0 bottom-0 left-0 right-0 bg-black  flex items-center justify-center z-1000">
+      <motion.div
+        className="w-[95%]  rounded-md bg-white mt-[15px] text-white relative flex flex-col items-center"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+        }}
+      >
         <div
           className="absolute top-0 right-1 text-black text-5xl cursor-pointer"
           onClick={onClose}
@@ -71,7 +76,7 @@ export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
               value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
-                setError(false)
+                setError(false);
               }}
             />
           </div>
@@ -83,8 +88,12 @@ export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
         >
           Добавить
         </Button>
-        {error && <div className="text-black mb-4 text-lg text-center" >Название должно быть не менее 5 символов</div>}
-      </div>
+        {error && (
+          <div className="text-black mb-4 text-lg text-center">
+            Название должно быть не менее 5 символов
+          </div>
+        )}
+      </motion.div>
     </div>
   );
 }

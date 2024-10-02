@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { motion } from "framer-motion";
 
 interface Props {
   isOpen: boolean;
@@ -44,19 +45,22 @@ export function CreatePostModal({
 
     if (id) id = parseInt(id);
     else return;
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/create/post`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: title,
-        content: description,
-        projectId: projectId,
-        status: state,
-      }),
-    }).then((res) => res.json());
+    const res = await fetch(
+      `${import.meta.env.VITE_DEV_URL}/projects/create/post`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: title,
+          content: description,
+          projectId: projectId,
+          status: state,
+        }),
+      }
+    ).then((res) => res.json());
 
     if (res) {
       trigger();
@@ -71,7 +75,16 @@ export function CreatePostModal({
 
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-black  flex items-center justify-center z-1000">
-      <div className="w-[97%]  rounded-md bg-white mt-[15px] text-white relative flex flex-col items-center">
+      <motion.div
+        className="w-[95%]  rounded-md bg-white  text-white relative flex flex-col items-center"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+        }}
+      >
         <div
           className="absolute top-0 right-1 text-black text-5xl cursor-pointer"
           onClick={onClose}
@@ -109,8 +122,11 @@ export function CreatePostModal({
             <label htmlFor="description" className="mb-1  text-2xl">
               Статус
             </label>
-            <Select value={state} onValueChange={(n)=> setState(n)}>
-              <SelectTrigger className="w-[60%] text-black" onClick={handleSelect}>
+            <Select value={state} onValueChange={(n) => setState(n)}>
+              <SelectTrigger
+                className="w-[60%] text-black"
+                onClick={handleSelect}
+              >
                 <SelectValue placeholder="Статус задачи" />
               </SelectTrigger>
               <SelectContent>
@@ -136,7 +152,7 @@ export function CreatePostModal({
             Название должно быть не менее 5 символов и статус заполнен
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
