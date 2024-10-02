@@ -102,7 +102,7 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
                   {value.content}
                 </p>
                 <Badge
-                  className={`outline mt-3 outline-2 bg-white text-black ${
+                  className={`outline mt-3 outline-2 bg-white text-black hover:scale-105 duration-300 transition-transform ${
                     value.status == "В процессе"
                       ? "outline-yellow-500"
                       : value.status === "Закончено"
