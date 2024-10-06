@@ -76,7 +76,7 @@ export function CreatePostModal({
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-black  flex items-center justify-center z-1000">
       <motion.div
-        className="w-[95%]  rounded-md bg-white  text-white relative flex flex-col items-center"
+        className="w-[95%] sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] rounded-md bg-white  text-white relative flex flex-col items-center"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{

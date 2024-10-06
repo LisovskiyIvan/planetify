@@ -14,7 +14,7 @@ export function Logout() {
     <div className="w-[100%] min-h-[100dvh]">
       <Navbar></Navbar>
       <div className="flex justify-center ">
-      <div className="fixed top-[35%] bottom-[35%] left-[10%] right-[10%] bg-black text-white rounded-2xl flex items-center justify-center z-1000">
+      <div className="fixed top-[35%] bottom-[35%] left-[10%] sm:left-[20%] md:left-[25%] lg:left-[30%] xl:left-[35%] right-[10%] sm:right-[20%] md:right-[25%] lg:right-[30%] xl:right-[35%]  bg-black text-white rounded-2xl flex items-center justify-center z-1000">
           <div className="flex flex-col">
             <h1 className="text-center text-2xl mb-5 px-2">
               Выйти из аккаунта?

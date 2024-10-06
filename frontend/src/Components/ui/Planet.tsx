@@ -8,7 +8,7 @@ export function Planet() {
 
   return (
     // <img src="/saturn.png" alt="logo" className="" />
-    <Lottie  onComplete={() => {
+    <Lottie className="hover:scale-110 duration-300" onComplete={() => {
       planetsRef.current?.setDirection(-1)
       planetsRef.current?.play()
     }} lottieRef={planetsRef} animationData={animationData}/>  

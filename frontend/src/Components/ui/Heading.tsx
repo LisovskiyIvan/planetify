@@ -12,7 +12,7 @@ export function Heading() {
       <p className=" text-3xl font-bold raleway mb-10">
         Пусть мысли и задачи всегда будут на своих орбитах
       </p>
-      <div className="flex flex-col">
+      <div className="flex flex-col md:flex-row">
         <Link to={user ? `/user/${user}` : '/signup'}>
         <Button className="text-2xl p-5 mx-5 my-4 hover:scale-110 duration-500 transition-all">
           {user ? 'К задачам' : 'Опробовать'}

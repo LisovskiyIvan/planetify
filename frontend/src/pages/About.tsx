@@ -22,7 +22,7 @@ export function About() {
             <Navbar></Navbar>
             <div className="pb-10 ">
         <h1 className="text-5xl raleway h-[20%] pt-16  xl:pt-20 xl:pl-10 text-center">Почему именно planetify?</h1>
-        <div className=" flex flex-col justify-evenly items-center my-12">
+        <div className=" flex flex-col lg:flex-row  justify-evenly items-center my-12">
           <CardInfo info={data[0]}></CardInfo>
           <CardInfo info={data[1]}></CardInfo>
           <CardInfo info={data[2]}></CardInfo>

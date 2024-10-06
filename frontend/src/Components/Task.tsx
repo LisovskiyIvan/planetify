@@ -80,7 +80,7 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
 
   return (
     <Card
-      className="bg-black text-white w-[90%] min-h-[200px] rounded-xl my-2"
+      className="bg-black text-white w-[90%] xl:w-[30%] xl:m-5 min-h-[200px] rounded-xl my-2"
       key={data.id}
     >
       <CardHeader>
