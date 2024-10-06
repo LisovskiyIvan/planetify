@@ -148,7 +148,7 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
       </CardContent>
       {deleteModal && (
         <motion.div
-          className="fixed top-[35%] bottom-[35%] left-[10%] right-[10%] bg-white text-black rounded-2xl flex items-center justify-center z-1000"
+          className="fixed top-[35%] bottom-[35%] left-[10%] sm:left-[20%] md:left-[25%] lg:left-[30%] xl:left-[35%] right-[10%] sm:right-[20%] md:right-[25%] lg:right-[30%] xl:right-[35%] bg-white text-black rounded-2xl flex items-center justify-center z-1000"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{
