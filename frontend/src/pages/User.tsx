@@ -79,7 +79,7 @@ export function User() {
         })}
         </div>
         
-        <Button className="text-lg w-[20%] self-center hover:scale-110 duration-300 transition-all mt-5 mb-10" onClick={toggleProjectModal} >Добавить</Button>
+        <Button className="text-sm sm:text-lg w-[20%] self-center hover:scale-110 duration-300 transition-all mt-5 mb-10" onClick={toggleProjectModal} >Добавить</Button>
       </div>
       <CreateProjectModal isOpen={projectModal} onClose={toggleProjectModal} trigger={triggerRerender}></CreateProjectModal>
       <CreatePostModal isOpen={postModal} onClose={togglePostModal} trigger={triggerRerender} projectId={projectId}></CreatePostModal>
