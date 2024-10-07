@@ -68,7 +68,7 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-black text-white  flex items-center justify-center z-1000">
       <motion.div
-        className="flex flex-col w-[95%] bg-white rounded-lg py-5"
+        className="flex flex-col w-[95%]  sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] bg-white rounded-lg py-5"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{
