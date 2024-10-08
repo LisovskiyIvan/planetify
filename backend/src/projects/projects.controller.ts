@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AuthGuard } from '../auth/auth.guard';
 import { INewPost, IOldPost, IPost } from './projects.model';
 
 @Controller('projects')
-export class PostsController {
+export class ProjectsController {
 
     constructor(private projectsService: ProjectsService){}
 
