@@ -121,9 +121,9 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Статус</SelectLabel>
-                  <SelectItem value="В процессе">В процессе</SelectItem>
-                  <SelectItem value="Закончено">Закончено</SelectItem>
-                  <SelectItem value="Не закончено">Не закончено</SelectItem>
+                  <SelectItem value="Когда-нибудь">Когда-нибудь</SelectItem>
+                  <SelectItem value="Может подождать">Может подождать</SelectItem>
+                  <SelectItem value="Важно">Важно</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
