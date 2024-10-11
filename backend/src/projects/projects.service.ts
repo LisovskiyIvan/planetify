@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { INewPost, IOldPost, IPost } from './projects.model';
+import { UsersService } from '../users/users.service';
+;
 
 @Injectable()
 export class ProjectsService {
 
-    constructor(private readonly prisma: PrismaService){}
+    constructor(private readonly prisma: PrismaService, private users: UsersService){}
 
     
 
@@ -21,6 +23,7 @@ export class ProjectsService {
     }
 
     async createProject(userId: number, title: string) {
+        this.users.updateProjects(userId)
         return await this.prisma.project.create({
             data: {
               title: title, 
@@ -33,7 +36,8 @@ export class ProjectsService {
           })
     }
 
-    async createPost(post: IPost) {
+    async createPost(post: IPost, userId: number) {
+      this.users.updatePosts(userId)
         return await this.prisma.post.create({
             data: {
               title: post.title, 
@@ -50,6 +54,7 @@ export class ProjectsService {
 
 
     async deleteProject(projectId: number) {
+
         return await this.prisma.project.delete({
             where: {
               id: projectId, 
@@ -86,6 +91,7 @@ export class ProjectsService {
             data: {
               title: newPost.title || oldPost.title, 
               content: newPost.content || oldPost.content, 
+              status: newPost.status || oldPost.status
             }
           });
     }

@@ -21,6 +21,8 @@ model User {
   password  String 
   projects     Project[]  
   paid_user Boolean @default(false)
+  all_projects Int @default(0)
+  all_posts Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   

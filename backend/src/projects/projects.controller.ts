@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { AuthGuard } from '../auth/auth.guard';
-import { INewPost, IOldPost, IPost } from './projects.model';
+import { CreatePostInput, INewPost, IOldPost, IPost } from './projects.model';
 
 @Controller('projects')
 export class ProjectsController {
@@ -30,8 +30,8 @@ export class ProjectsController {
 
     @UseGuards(AuthGuard)
     @Post('/create/post')
-    async createPost(@Body() post: IPost) {
-        return await this.projectsService.createPost(post)
+    async createPost(@Body() post:CreatePostInput) {
+        return await this.projectsService.createPost(post, post.userId)
     }
 
     @UseGuards(AuthGuard)

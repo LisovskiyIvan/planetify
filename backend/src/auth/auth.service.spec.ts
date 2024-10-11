@@ -45,6 +45,8 @@ describe('AuthService', () => {
         username: 'testuser',
         password: 'hashedpass',
         paid_user: false,
+        all_projects: 0,
+        all_posts: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
       };

@@ -5,6 +5,10 @@ export interface IPost {
   status: string
 }
 
+export interface CreatePostInput extends IPost {
+  userId: number
+}
+
 export interface IOldPost {
   id: number,
   title: string,

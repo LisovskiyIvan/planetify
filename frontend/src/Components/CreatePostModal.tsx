@@ -58,6 +58,7 @@ export function CreatePostModal({
           content: description,
           projectId: projectId,
           status: state,
+          userId: id
         }),
       }
     ).then((res) => res.json());

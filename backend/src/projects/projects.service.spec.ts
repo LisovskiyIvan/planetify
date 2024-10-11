@@ -75,7 +75,8 @@ describe('ProjectsService', () => {
         status: 'PUBLISHED',
         projectId: 1,
       };
-      await service.createPost(post);
+      const userId = 1
+      await service.createPost(post, userId);
       expect(prisma.post.create).toHaveBeenCalledWith({
         data: {
           title: post.title,

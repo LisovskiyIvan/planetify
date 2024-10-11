@@ -17,7 +17,9 @@ export class AuthService {
 
      async validateUser(userDto: IUser) {
         const user = await this.userService.getUserByName(userDto.username)
+        console.log(user)
         const passwordEauals = await bcrypt.compare(userDto.password, user.password)
+        console.log(passwordEauals)
         if(user && passwordEauals) return user
         else throw new UnauthorizedException({message: 'Неккоректные данные для входа'})
     }
@@ -39,7 +41,7 @@ export class AuthService {
         private async generateToken(userDto: User) {
             const payload = {username: userDto.username}
             return {
-                token: this.jwtService.sign(payload),
+                token: this.jwtService.sign(payload, {secret: process.env.PRIVATE_KEY}),
                 username: userDto.username,
                 id: userDto.id.toString()
             }
