@@ -17,9 +17,7 @@ export class AuthService {
 
      async validateUser(userDto: IUser) {
         const user = await this.userService.getUserByName(userDto.username)
-        console.log(user)
         const passwordEauals = await bcrypt.compare(userDto.password, user.password)
-        console.log(passwordEauals)
         if(user && passwordEauals) return user
         else throw new UnauthorizedException({message: 'Неккоректные данные для входа'})
     }
