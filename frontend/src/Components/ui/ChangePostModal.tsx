@@ -122,7 +122,9 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
                 <SelectGroup>
                   <SelectLabel>Статус</SelectLabel>
                   <SelectItem value="Когда-нибудь">Когда-нибудь</SelectItem>
-                  <SelectItem value="Может подождать">Может подождать</SelectItem>
+                  <SelectItem value="Может подождать">
+                    Может подождать
+                  </SelectItem>
                   <SelectItem value="Важно">Важно</SelectItem>
                 </SelectGroup>
               </SelectContent>

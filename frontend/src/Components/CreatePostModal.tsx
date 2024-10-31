@@ -58,7 +58,7 @@ export function CreatePostModal({
           content: description,
           projectId: projectId,
           status: state,
-          userId: id
+          userId: id,
         }),
       }
     ).then((res) => res.json());
@@ -134,7 +134,9 @@ export function CreatePostModal({
                 <SelectGroup>
                   <SelectLabel>Статус</SelectLabel>
                   <SelectItem value="Когда-нибудь">Когда-нибудь</SelectItem>
-                  <SelectItem value="Может подождать">Может подождать</SelectItem>
+                  <SelectItem value="Может подождать">
+                    Может подождать
+                  </SelectItem>
                   <SelectItem value="Важно">Важно</SelectItem>
                 </SelectGroup>
               </SelectContent>

@@ -1,5 +1,5 @@
 # Этап сборки (build stage)
-FROM node:18 AS build
+FROM node:18-alpine AS build
 
 # Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
@@ -7,8 +7,8 @@ WORKDIR /app
 # Копируем package.json и package-lock.json (если есть)
 COPY package*.json ./
 
-# Устанавливаем зависимости
-RUN npm install
+# Устанавливаем только production зависимости
+RUN npm ci --only=production
 
 # Копируем весь исходный код в контейнер
 COPY . .
@@ -22,7 +22,7 @@ FROM node:18-alpine
 # Устанавливаем рабочую директорию для готового приложения
 WORKDIR /app
 
-# Копируем зависимости в production-окружение
+# Копируем только необходимые production зависимости
 COPY --from=build /app/node_modules ./node_modules
 
 # Копируем собранные файлы приложения

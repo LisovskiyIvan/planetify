@@ -26,7 +26,7 @@ export class StatisticService {
             }
         }
         return {
-            projectsCount: user.all_projects,
+            projectsCount: user.all_projects + data.length,
             postsCount: user.all_posts + posts,
             currentProjects: projects,
             currentPosts: posts,

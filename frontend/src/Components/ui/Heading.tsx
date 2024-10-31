@@ -3,8 +3,7 @@ import { Button } from "./button";
 import { useState } from "react";
 
 export function Heading() {
-
-  const [user] = useState(localStorage.getItem('id'))
+  const [user] = useState(localStorage.getItem("id"));
 
   return (
     <div className="flex flex-col items-center">
@@ -13,16 +12,16 @@ export function Heading() {
         Пусть мысли и задачи всегда будут на своих орбитах
       </p>
       <div className="flex flex-col md:flex-row">
-        <Link to={user ? `/user/${user}` : '/signup'}>
-        <Button className="text-2xl p-5 mx-5 my-4 hover:scale-110 duration-500 transition-all">
-          {user ? 'К задачам' : 'Опробовать'}
-        </Button>
+        <Link to={user ? `/user/${user}` : "/signup"}>
+          <Button className="text-2xl p-5 mx-5 my-4 hover:scale-110 duration-500 transition-all">
+            {user ? "К задачам" : "Опробовать"}
+          </Button>
         </Link>
-        
-        <Link to={'/about'}>
-        <Button className="text-2xl p-5 mx-5 my-4 hover:scale-110 duration-500 transition-all">
-          О нас
-        </Button>
+
+        <Link to={"/about"}>
+          <Button className="text-2xl p-5 mx-5 my-4 hover:scale-110 duration-500 transition-all">
+            О нас
+          </Button>
         </Link>
       </div>
     </div>
