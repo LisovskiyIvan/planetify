@@ -32,7 +32,7 @@ export function User() {
   const trigger = useAtomValue(triggerAtom);
   const tokenRef = useRef(token);
   const idRef = useRef(id);
-  
+
   useEffect(() => {
     async function getData() {
       if (!tokenRef.current) navigate("/login");
@@ -56,35 +56,26 @@ export function User() {
     }
     getData();
   }, [trigger, navigate]);
-  
 
- 
   return (
     <div className="w-[100%] min-h-[100dvh] bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-500">
       <Navbar></Navbar>
       <div className="flex flex-col ">
         <div className="items-center flex flex-col xl:flex-row xl: flex-wrap align-baseline">
-          {data?.map((value) => {
-            return (
-              <Task
-                data={value}
-                key={value.id}
-              />
-            );
-          })}
+          {data?.map((value) => (
+            <Task data={value} key={value.id} />
+          ))}
         </div>
 
         <Button
-          className="text-sm sm:text-lg w-[20%] xl:w-[15%] 2xl:w-[10%] self-center hover:scale-110 duration-300 transition-all mt-5 mb-10"
+          className="text-sm sm:text-lg w-[20%] xl:w-[15%] 2xl:w-[10%] self-center hover:scale-110 duration-300  transition-all mt-5 mb-10"
           onClick={() => setCreateProjectModal((prev) => !prev)}
         >
           Добавить
         </Button>
       </div>
-      <CreateProjectModal
-      ></CreateProjectModal>
-      <CreatePostModal
-      ></CreatePostModal>
+      <CreateProjectModal></CreateProjectModal>
+      <CreatePostModal></CreatePostModal>
     </div>
   );
 }

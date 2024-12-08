@@ -4,11 +4,7 @@ import { motion } from "framer-motion";
 import { useAtom, useSetAtom } from "jotai";
 import { createProjectModalAtom, triggerAtom } from "@/atoms/modalAtoms";
 
-
-
 export function CreateProjectModal() {
-
-
   const [projectModal, setProjectModal] = useAtom(createProjectModalAtom);
   const [title, setTitle] = useState("");
   const [error, setError] = useState(false);
@@ -17,7 +13,6 @@ export function CreateProjectModal() {
     return null;
   }
 
-  
   const token = localStorage.getItem("token");
 
   async function createProject() {

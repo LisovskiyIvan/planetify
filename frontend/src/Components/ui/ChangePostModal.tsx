@@ -11,10 +11,12 @@ import {
 } from "./select";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { changePostModalAtom, selectedPostAtom, triggerAtom } from "@/atoms/modalAtoms";
+import {
+  changePostModalAtom,
+  selectedPostAtom,
+  triggerAtom,
+} from "@/atoms/modalAtoms";
 import { useAtom, useSetAtom } from "jotai";
-
-
 
 export function ChangePostModal() {
   const [postData] = useAtom<IPost | undefined>(selectedPostAtom);
@@ -137,7 +139,7 @@ export function ChangePostModal() {
           <Button className="mx-2 w-16" onClick={() => setChangeModal(false)}>
             Нет
           </Button>
-        </div>  
+        </div>
         {error && (
           <div className="text-black mb-4 text-lg text-center">
             Название должно быть не менее 5 символов и статус заполнен

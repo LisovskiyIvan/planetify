@@ -1,15 +1,12 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
+export default function Navbar() {
+  const [user] = useState(localStorage.getItem("username"));
+  const [userId] = useState(localStorage.getItem("id"));
 
-
-export default function Navbar  () {
-
-    const [user] = useState(localStorage.getItem('username'))
-    const [userId] = useState(localStorage.getItem('id'))
-
-    return(
-        <header className="bg-black w-[100%] py-4 px-2 sm:px-4 lg:px-4 2xl:px-4 text-white">
+  return (
+    <header className="bg-black w-[100%] py-4 px-2 sm:px-4 lg:px-4 2xl:px-4 text-white">
       <nav className="flex items-center justify-between">
         <div className="flex items-center ">
           <Link to="/">
@@ -25,13 +22,15 @@ export default function Navbar  () {
           >
             Planetify
           </Link>
-          {user && <Link
-                className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl sm:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
-                to="/dashboard"
-              >
-                Статистика
-              </Link>}
-          
+          {user && (
+            <Link
+              className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl sm:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+              to="/dashboard"
+            >
+              Статистика
+            </Link>
+          )}
+
           <Link
             className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl sm:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
             to="/about"
@@ -40,32 +39,39 @@ export default function Navbar  () {
           </Link>
         </div>
         <div className="flex items-center">
-          {user ? (<>
-            <Link to={`/user/${userId}`} className="m-1 sm:mr-4 2xl:mr-6  text-md sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer">
-              {user}
-            </Link>
-            <Link to={`/logout`} className="m-1 sm:mr-4 2xl:mr-6  text-md sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer">
-              Выйти
-            </Link>
+          {user ? (
+            <>
+              <Link
+                to={`/user/${userId}`}
+                className="m-1 sm:mr-4 2xl:mr-6  text-md sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+              >
+                {user}
+              </Link>
+              <Link
+                to={`/logout`}
+                className="m-1 sm:mr-4 2xl:mr-6  text-md sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+              >
+                Выйти
+              </Link>
             </>
           ) : (
             <>
-            <Link
-              className="mr-15 text-sm sm:text-lg mr-[4vw] sm:mr-[2vw] lg:mr-[1vw] lg:text-xl 2xl:text-2xl 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
-              to="/login"
-            >
-              Войти
-            </Link>
-             <Link
-             className=" text-sm sm:text-lg mr-[2vw] sm:mr-[1vw]  lg:text-xl 2xl:text-2xl 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
-             to="/signup"
-           >
-             Регистрация
-           </Link></>
+              <Link
+                className="mr-15 text-sm sm:text-lg mr-[4vw] sm:mr-[2vw] lg:mr-[1vw] lg:text-xl 2xl:text-2xl 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+                to="/login"
+              >
+                Войти
+              </Link>
+              <Link
+                className=" text-sm sm:text-lg mr-[2vw] sm:mr-[1vw]  lg:text-xl 2xl:text-2xl 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+                to="/signup"
+              >
+                Регистрация
+              </Link>
+            </>
           )}
         </div>
       </nav>
     </header>
-
-    )
+  );
 }

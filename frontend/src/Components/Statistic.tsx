@@ -31,13 +31,8 @@ export function Statistic() {
   const [isLoading, setIsLoading] = useState(false);
   const [isHover, setIsHover] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsHover(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHover(false);
-  };
+  const handleMouseEnter = () => setIsHover(true);
+  const handleMouseLeave = () => setIsHover(false);
 
   useEffect(() => {
     async function getData() {
@@ -155,9 +150,10 @@ export function Statistic() {
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
                   Количество заданий средней важности{" "}
-                  {((data.mediumPriorityPosts / data.currentPosts) * 100).toFixed(
-                    0
-                  )}
+                  {(
+                    (data.mediumPriorityPosts / data.currentPosts) *
+                    100
+                  ).toFixed(0)}
                   %
                 </h3>
                 <Progress
@@ -168,7 +164,9 @@ export function Statistic() {
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
                   Количество заданий низкой важности{" "}
-                  {((data.lowPriorityPosts / data.currentPosts) * 100).toFixed(0)}
+                  {((data.lowPriorityPosts / data.currentPosts) * 100).toFixed(
+                    0
+                  )}
                   %
                 </h3>
                 <Progress

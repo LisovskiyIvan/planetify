@@ -3,39 +3,37 @@ import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/button";
 import { ChangePostModal } from "./ui/ChangePostModal";
-import { changePostModalAtom, createPostModalAtom, deletePostModalAtom, deleteProjectModalAtom, selectedPostAtom, selectedProjectIdAtom, triggerAtom } from "@/atoms/modalAtoms";
-import { useAtom, useSetAtom } from "jotai";
 import { DeleteModal } from "./DeleteModal";
+import {
+  changePostModalAtom,
+  createPostModalAtom,
+  deletePostModalAtom,
+  deleteProjectModalAtom,
+  selectedPostAtom,
+  selectedProjectIdAtom,
+  triggerAtom,
+} from "@/atoms/modalAtoms";
+import { useAtom, useSetAtom } from "jotai";
+import { IData, IPost } from "@/models";
 
 interface Props {
   data: IData;
-}
-interface IPost {
-  id: number;
-  content: string;
-  title: string;
-  status: string;
-}
-interface IData {
-  id: number;
-  authorId: number;
-  title: string;
-  posts: IPost[];
 }
 
 export function Task({ data }: Props) {
   const [token] = useState(localStorage.getItem("token"));
   const [deletePostModal, setDeletePostModal] = useAtom(deletePostModalAtom);
-  const [deleteProjectModal, setDeleteProjectModal] = useAtom(deleteProjectModalAtom);
+  const [deleteProjectModal, setDeleteProjectModal] = useAtom(
+    deleteProjectModalAtom
+  );
   const [changeModal, setChangeModal] = useAtom(changePostModalAtom);
   const [postData, setPostData] = useAtom<IPost | undefined>(selectedPostAtom);
   const setProjectId = useSetAtom(selectedProjectIdAtom);
   const setPostModal = useSetAtom(createPostModalAtom);
   const trigger = useSetAtom(triggerAtom);
 
-  async function deleteProject() {
+  const handleDeleteProject = async () => {
     if (!token) return;
-
     const res = await fetch(
       `${import.meta.env.VITE_DEV_URL}/projects/${data.id}`,
       {
@@ -48,16 +46,15 @@ export function Task({ data }: Props) {
     trigger((prev) => !prev);
 
     if (!res) return;
-  }
+  };
 
-  function addPost(projectId: number) {
+  const handleAddPost = (projectId: number) => {
     setProjectId(projectId);
     setPostModal((prev) => !prev);
-  }
+  };
 
-  async function deletePost(id: number | undefined) {
-    if (!id) return;
-    if (!token) return;
+  const handleDeletePost = async (id: number | undefined) => {
+    if (!id || !token) return;
     const res = await fetch(
       `${import.meta.env.VITE_DEV_URL}/projects/post/${id}`,
       {
@@ -70,22 +67,22 @@ export function Task({ data }: Props) {
     trigger((prev) => !prev);
 
     if (!res) return;
-  }
+  };
 
-  function deletePostHandler(v: IPost) {
+  const handleDeletePostModal = (v: IPost) => {
     setDeletePostModal(true);
     setPostData(v);
-  }
+  };
 
-  function changePostModal(v: IPost) {
+  const handleChangePostModal = (v: IPost) => {
     setChangeModal(true);
     setPostData(v);
-  }
+  };
 
-  function deleteProjectHandler() {
+  const handleDeleteProjectModal = () => {
     setDeleteProjectModal(true);
     setProjectId(data.id);
-  }
+  };
 
   return (
     <Card
@@ -97,7 +94,7 @@ export function Task({ data }: Props) {
           {data.title}
           <div
             className="text-3xl hover:scale-120 duration-300 cursor-pointer"
-            onClick={deleteProjectHandler}
+            onClick={handleDeleteProjectModal}
           >
             &times;
           </div>
@@ -132,13 +129,13 @@ export function Task({ data }: Props) {
               <div className="flex">
                 <div
                   className="text-2xl hover:scale-110 duration-300 cursor-pointer"
-                  onClick={() => changePostModal(value)}
+                  onClick={() => handleChangePostModal(value)}
                 >
                   &#9997;
                 </div>
                 <div
                   className="text-3xl hover:scale-120 duration-300 cursor-pointer"
-                  onClick={() => deletePostHandler(value)}
+                  onClick={() => handleDeletePostModal(value)}
                 >
                   &times;
                 </div>
@@ -149,7 +146,7 @@ export function Task({ data }: Props) {
         <div className="flex justify-center">
           <Button
             className="rounded-[100%] text-black mt-4 mb-1 bg-white active:bg-slate hover:scale-110 duration-300 transition-all"
-            onClick={() => addPost(data.id)}
+            onClick={() => handleAddPost(data.id)}
           >
             +
           </Button>
@@ -158,7 +155,7 @@ export function Task({ data }: Props) {
       {deletePostModal && (
         <DeleteModal
           title={postData?.title || ""}
-          deleteThing={deletePost}
+          deleteThing={handleDeletePost}
           closeModal={setDeletePostModal}
           id={postData?.id || 0}
         />
@@ -166,15 +163,12 @@ export function Task({ data }: Props) {
       {deleteProjectModal && (
         <DeleteModal
           title={data.title}
-          deleteThing={deleteProject}
+          deleteThing={handleDeleteProject}
           closeModal={setDeleteProjectModal}
           id={data.id}
         />
       )}
-      {changeModal && (
-        <ChangePostModal
-        />
-      )}
+      {changeModal && <ChangePostModal />}
     </Card>
   );
 }
