@@ -71,7 +71,7 @@ export function Statistic() {
     }
 
     getData();
-  }, []);
+  }, [id, token]);
 
   function getRandomColor() {
     switch (Math.floor(Math.random() * 5) + 1) {
@@ -142,37 +142,37 @@ export function Statistic() {
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
                   Количество срочных заданий{" "}
-                  {((data.highPriorityPosts / data.postsCount) * 100).toFixed(
+                  {((data.highPriorityPosts / data.currentPosts) * 100).toFixed(
                     0
                   )}
                   %
                 </h3>
                 <Progress
-                  value={(data.highPriorityPosts / data.postsCount) * 100}
+                  value={(data.highPriorityPosts / data.currentPosts) * 100}
                   className={`${getRandomColor()}`}
                 ></Progress>
               </div>
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
                   Количество заданий средней важности{" "}
-                  {((data.mediumPriorityPosts / data.postsCount) * 100).toFixed(
+                  {((data.mediumPriorityPosts / data.currentPosts) * 100).toFixed(
                     0
                   )}
                   %
                 </h3>
                 <Progress
-                  value={(data.mediumPriorityPosts / data.postsCount) * 100}
+                  value={(data.mediumPriorityPosts / data.currentPosts) * 100}
                   className={`${getRandomColor()}`}
                 ></Progress>
               </div>
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
                   Количество заданий низкой важности{" "}
-                  {((data.lowPriorityPosts / data.postsCount) * 100).toFixed(0)}
+                  {((data.lowPriorityPosts / data.currentPosts) * 100).toFixed(0)}
                   %
                 </h3>
                 <Progress
-                  value={(data.lowPriorityPosts / data.postsCount) * 100}
+                  value={(data.lowPriorityPosts / data.currentPosts) * 100}
                   className={`${getRandomColor()}`}
                 ></Progress>
               </div>

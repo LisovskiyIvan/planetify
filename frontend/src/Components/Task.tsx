@@ -3,13 +3,12 @@ import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/button";
 import { ChangePostModal } from "./ui/ChangePostModal";
-import { motion } from "framer-motion";
+import { changePostModalAtom, createPostModalAtom, deletePostModalAtom, deleteProjectModalAtom, selectedPostAtom, selectedProjectIdAtom, triggerAtom } from "@/atoms/modalAtoms";
+import { useAtom, useSetAtom } from "jotai";
+import { DeleteModal } from "./DeleteModal";
 
 interface Props {
   data: IData;
-  trigger: () => void;
-  togglePostModal: () => void;
-  getProjectId: (projectId: number) => void;
 }
 interface IPost {
   id: number;
@@ -24,11 +23,15 @@ interface IData {
   posts: IPost[];
 }
 
-export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
+export function Task({ data }: Props) {
   const [token] = useState(localStorage.getItem("token"));
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [changeModal, setChangeModal] = useState(false);
-  const [postData, setPostData] = useState<IPost>();
+  const [deletePostModal, setDeletePostModal] = useAtom(deletePostModalAtom);
+  const [deleteProjectModal, setDeleteProjectModal] = useAtom(deleteProjectModalAtom);
+  const [changeModal, setChangeModal] = useAtom(changePostModalAtom);
+  const [postData, setPostData] = useAtom<IPost | undefined>(selectedPostAtom);
+  const setProjectId = useSetAtom(selectedProjectIdAtom);
+  const setPostModal = useSetAtom(createPostModalAtom);
+  const trigger = useSetAtom(triggerAtom);
 
   async function deleteProject() {
     if (!token) return;
@@ -42,15 +45,16 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
         },
       }
     ).then((r) => r.json());
-    trigger();
+    trigger((prev) => !prev);
 
     if (!res) return;
   }
 
-  function handleClick() {
-    getProjectId(data.id);
-    togglePostModal();
+  function addPost(projectId: number) {
+    setProjectId(projectId);
+    setPostModal((prev) => !prev);
   }
+
   async function deletePost(id: number | undefined) {
     if (!id) return;
     if (!token) return;
@@ -63,19 +67,24 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
         },
       }
     ).then((r) => r.json());
-    trigger();
+    trigger((prev) => !prev);
 
     if (!res) return;
   }
 
-  function deletePostModal(v: IPost) {
-    setDeleteModal(true);
+  function deletePostHandler(v: IPost) {
+    setDeletePostModal(true);
     setPostData(v);
   }
 
   function changePostModal(v: IPost) {
     setChangeModal(true);
     setPostData(v);
+  }
+
+  function deleteProjectHandler() {
+    setDeleteProjectModal(true);
+    setProjectId(data.id);
   }
 
   return (
@@ -88,7 +97,7 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
           {data.title}
           <div
             className="text-3xl hover:scale-120 duration-300 cursor-pointer"
-            onClick={deleteProject}
+            onClick={deleteProjectHandler}
           >
             &times;
           </div>
@@ -129,7 +138,7 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
                 </div>
                 <div
                   className="text-3xl hover:scale-120 duration-300 cursor-pointer"
-                  onClick={() => deletePostModal(value)}
+                  onClick={() => deletePostHandler(value)}
                 >
                   &times;
                 </div>
@@ -140,52 +149,30 @@ export function Task({ data, trigger, togglePostModal, getProjectId }: Props) {
         <div className="flex justify-center">
           <Button
             className="rounded-[100%] text-black mt-4 mb-1 bg-white active:bg-slate hover:scale-110 duration-300 transition-all"
-            onClick={handleClick}
+            onClick={() => addPost(data.id)}
           >
             +
           </Button>
         </div>
       </CardContent>
-      {deleteModal && (
-        <motion.div
-          className="fixed top-[35%] bottom-[35%] left-[10%] sm:left-[20%] md:left-[25%] lg:left-[30%] xl:left-[35%] right-[10%] sm:right-[20%] md:right-[25%] lg:right-[30%] xl:right-[35%] bg-white text-black rounded-2xl flex items-center justify-center z-1000"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 20,
-          }}
-        >
-          <div className="flex flex-col">
-            <h1 className="text-center text-2xl mb-5 px-2">
-              Удалить задачу {postData?.title}?
-            </h1>
-            <div className="flex justify-center">
-              <Button
-                className="mx-2 w-16"
-                onClick={() => {
-                  deletePost(postData?.id);
-                  setDeleteModal(false);
-                }}
-              >
-                Да
-              </Button>
-              <Button
-                className="mx-2 w-16"
-                onClick={() => setDeleteModal(false)}
-              >
-                Нет
-              </Button>
-            </div>
-          </div>
-        </motion.div>
+      {deletePostModal && (
+        <DeleteModal
+          title={postData?.title || ""}
+          deleteThing={deletePost}
+          closeModal={setDeletePostModal}
+          id={postData?.id || 0}
+        />
+      )}
+      {deleteProjectModal && (
+        <DeleteModal
+          title={data.title}
+          deleteThing={deleteProject}
+          closeModal={setDeleteProjectModal}
+          id={data.id}
+        />
       )}
       {changeModal && (
         <ChangePostModal
-          onClose={setChangeModal}
-          post={postData}
-          trigger={trigger}
         />
       )}
     </Card>

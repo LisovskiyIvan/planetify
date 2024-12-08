@@ -3,7 +3,9 @@ import { CreateProjectModal } from "@/Components/CreateProjectModal";
 import Navbar from "@/Components/Navbar";
 import { Task } from "@/Components/Task";
 import { Button } from "@/Components/ui/button";
-import { useEffect, useState } from "react";
+import { createProjectModalAtom, triggerAtom } from "@/atoms/modalAtoms";
+import { useSetAtom, useAtomValue } from "jotai";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export interface IPost {
@@ -26,20 +28,20 @@ export function User() {
   const navigate = useNavigate();
   const [token] = useState(localStorage.getItem("token"));
   const [data, setData] = useState<IData[]>();
-  const [projectModal, setProjectModal] = useState(false);
-  const [postModal, setPostModal] = useState(false);
-  const [trigger, setTrigger] = useState(false);
-  const [projectId, setProjectId] = useState(0);
-
+  const setCreateProjectModal = useSetAtom(createProjectModalAtom);
+  const trigger = useAtomValue(triggerAtom);
+  const tokenRef = useRef(token);
+  const idRef = useRef(id);
+  
   useEffect(() => {
     async function getData() {
-      if (!token) navigate("/login");
+      if (!tokenRef.current) navigate("/login");
       const data = await fetch(
-        `${import.meta.env.VITE_DEV_URL}/projects/${id}`,
+        `${import.meta.env.VITE_DEV_URL}/projects/${idRef.current}`,
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${tokenRef.current}`,
           },
         }
       ).then((res) => res.json());
@@ -53,22 +55,10 @@ export function User() {
       setData(data);
     }
     getData();
-  }, [trigger]);
+  }, [trigger, navigate]);
+  
 
-  function toggleProjectModal() {
-    setProjectModal((prev) => !prev);
-  }
-
-  function handleProjectId(e: number) {
-    setProjectId(e);
-  }
-  function togglePostModal() {
-    setPostModal((prev) => !prev);
-  }
-
-  function triggerRerender() {
-    setTrigger((prev) => !prev);
-  }
+ 
   return (
     <div className="w-[100%] min-h-[100dvh] bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-500">
       <Navbar></Navbar>
@@ -79,31 +69,21 @@ export function User() {
               <Task
                 data={value}
                 key={value.id}
-                trigger={triggerRerender}
-                togglePostModal={togglePostModal}
-                getProjectId={handleProjectId}
               />
             );
           })}
         </div>
 
         <Button
-          className="text-sm sm:text-lg w-[20%] self-center hover:scale-110 duration-300 transition-all mt-5 mb-10"
-          onClick={toggleProjectModal}
+          className="text-sm sm:text-lg w-[20%] xl:w-[15%] 2xl:w-[10%] self-center hover:scale-110 duration-300 transition-all mt-5 mb-10"
+          onClick={() => setCreateProjectModal((prev) => !prev)}
         >
           Добавить
         </Button>
       </div>
       <CreateProjectModal
-        isOpen={projectModal}
-        onClose={toggleProjectModal}
-        trigger={triggerRerender}
       ></CreateProjectModal>
       <CreatePostModal
-        isOpen={postModal}
-        onClose={togglePostModal}
-        trigger={triggerRerender}
-        projectId={projectId}
       ></CreatePostModal>
     </div>
   );

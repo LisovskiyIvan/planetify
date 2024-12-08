@@ -43,7 +43,7 @@ export function StatisticSkeleton() {
                 </div>
             </div>
             <div className="sm:w-[40%]  bg-blue px-[3%]">
-            <Skeleton className="bg-black text-white h-[100%] flex flex-col justify-around items-center  w-[100%] rounded-xl my-5 py-5 text-white">
+            <Skeleton className="bg-black text-white h-[100%] flex flex-col justify-around items-center  w-[100%] rounded-xl my-5 py-5 ">
                     <Skeleton className="w-[90%] h-[200px] my-5"></Skeleton>
                     <Skeleton className="w-[80%] h-[20px] my-5"></Skeleton>
                     <Skeleton className="w-[60%] h-[20px] my-5"></Skeleton>
