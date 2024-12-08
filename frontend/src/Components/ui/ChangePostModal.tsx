@@ -11,23 +11,22 @@ import {
 } from "./select";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { changePostModalAtom, selectedPostAtom, triggerAtom } from "@/atoms/modalAtoms";
+import { useAtom, useSetAtom } from "jotai";
 
-interface Props {
-  onClose: (a: boolean) => void;
-  post: IPost | undefined;
-  trigger: () => void;
-}
 
-export function ChangePostModal({ onClose, post, trigger }: Props) {
-  const [title, setTitle] = useState(post?.title || "");
+
+export function ChangePostModal() {
+  const [postData] = useAtom<IPost | undefined>(selectedPostAtom);
+  const setChangeModal = useSetAtom(changePostModalAtom);
+  const [title, setTitle] = useState(postData?.title || "");
   const [error, setError] = useState(false);
   const [token] = useState(localStorage.getItem("token"));
-  const [description, setDescription] = useState(post?.content || "");
-  const [state, setState] = useState(post?.status || "");
-
-  const handleSelect = (event: any) => {
+  const [description, setDescription] = useState(postData?.content || "");
+  const [state, setState] = useState(postData?.status || "");
+  const trigger = useSetAtom(triggerAtom);
+  const handleSelect = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault(); // предотвращает действие по умолчанию
-    console.log("Выбор был предотвращён!");
   };
 
   async function changePost() {
@@ -45,13 +44,13 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
       },
       body: JSON.stringify({
         oldPost: {
-          id: post?.id,
-          title: post?.title,
-          content: post?.content,
-          status: post?.status,
+          id: postData?.id,
+          title: postData?.title,
+          content: postData?.content,
+          status: postData?.status,
         },
         newPost: {
-          id: post?.id,
+          id: postData?.id,
           title: title,
           content: description,
           status: state,
@@ -60,8 +59,8 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
     }).then((res) => res.json());
 
     if (res) {
-      trigger();
-      onClose(false);
+      trigger((prev) => !prev);
+      setChangeModal(false);
     }
   }
 
@@ -78,10 +77,10 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
         }}
       >
         <h1 className="text-center text-3xl mb-5 px-2 text-black ">
-          Изменить задачу {post?.title}?
+          Изменить задачу {postData?.title}?
         </h1>
         <div className="py-4 px-2 text-xl flex flex-col items-center w-[100%]">
-          <div className="flex flex-col items-center pb-4 my-4 bg-black w-[100%] rounded-lg ">
+          <div className="flex flex-col items-center pb-4 my-4 bg-black w-[85%] rounded-lg ">
             <label htmlFor="title" className="my-2  text-2xl">
               Задание
             </label>
@@ -96,7 +95,7 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
               }}
             />
           </div>
-          <div className="flex flex-col items-center pb-4 mb-2 bg-black w-[100%] rounded-lg">
+          <div className="flex flex-col items-center pb-4 mb-2 bg-black w-[85%] rounded-lg">
             <label htmlFor="description" className="mb-1  text-2xl">
               Описание
             </label>
@@ -107,7 +106,7 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
-          <div className="flex flex-col items-center pb-4 mb-2 bg-black w-[100%] rounded-lg">
+          <div className="flex flex-col items-center pb-4 mb-2 bg-black w-[85%] rounded-lg">
             <label htmlFor="description" className="mb-1  text-2xl">
               Статус
             </label>
@@ -135,10 +134,10 @@ export function ChangePostModal({ onClose, post, trigger }: Props) {
           <Button className="mx-2 w-16" onClick={changePost}>
             Да
           </Button>
-          <Button className="mx-2 w-16" onClick={() => onClose(false)}>
+          <Button className="mx-2 w-16" onClick={() => setChangeModal(false)}>
             Нет
           </Button>
-        </div>
+        </div>  
         {error && (
           <div className="text-black mb-4 text-lg text-center">
             Название должно быть не менее 5 символов и статус заполнен

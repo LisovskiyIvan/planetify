@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { motion } from "framer-motion";
+import { useAtom, useSetAtom } from "jotai";
+import { createProjectModalAtom, triggerAtom } from "@/atoms/modalAtoms";
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-  trigger: () => void;
-}
 
-export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
-  if (!isOpen) {
+
+export function CreateProjectModal() {
+
+
+  const [projectModal, setProjectModal] = useAtom(createProjectModalAtom);
+  const [title, setTitle] = useState("");
+  const [error, setError] = useState(false);
+  const trigger = useSetAtom(triggerAtom);
+  if (!projectModal) {
     return null;
   }
 
-  const [title, setTitle] = useState("");
-  const [error, setError] = useState(false);
-  const [token] = useState(localStorage.getItem("token"));
+  
+  const token = localStorage.getItem("token");
 
   async function createProject() {
     if (!token) return;
@@ -41,15 +44,16 @@ export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
     }).then((res) => res.json());
 
     if (res) {
-      trigger();
-      onClose();
+      trigger((prev) => !prev);
+      setProjectModal(false);
+      setTitle("");
     }
   }
 
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-black  flex items-center justify-center z-1000">
       <motion.div
-        className="w-[95%] sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] rounded-md bg-white mt-[15px] text-white relative flex flex-col items-center"
+        className="w-[95%] sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] 2xl:w-[25%] rounded-md bg-white 2xl:h-[300px] text-white relative flex flex-col items-center"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{
@@ -60,12 +64,12 @@ export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
       >
         <div
           className="absolute top-0 right-1 text-black text-5xl cursor-pointer"
-          onClick={onClose}
+          onClick={() => setProjectModal(false)}
         >
           &times;
         </div>
         <div className="p-8 text-xl flex flex-col items-center w-[100%]">
-          <div className="flex flex-col items-center pb-4 my-3 bg-black w-[100%] rounded-lg ">
+          <div className="flex flex-col items-center pb-4 my-3 bg-black w-[85%] rounded-lg ">
             <label htmlFor="title" className="my-2  text-2xl">
               Название
             </label>
@@ -84,7 +88,7 @@ export function CreateProjectModal({ isOpen, onClose, trigger }: Props) {
         <Button
           onClick={createProject}
           type="submit"
-          className="w-[50%] my-4 text-lg rounded-lg px-4 py-2 bg-black"
+          className="w-[50%] xl:w-[30%] 2xl:w-[25%] my-4 text-lg rounded-lg px-4 py-2 bg-black"
         >
           Добавить
         </Button>
