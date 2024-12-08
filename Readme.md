@@ -17,7 +17,22 @@
 
 ## Авторы
 
-Приложение было разработано командой Мной [https://daymedead.fun](https://daymedead.fun). Мы надеемся, что оно поможет вам в управлении задачами и повысит вашу продуктивность.
+Приложение было разработано командой Мной [https://daymedead.fun](https://daymedead.fun). Я надеюсь, что оно поможет вам в управлении задачами и повысит вашу продуктивность.
+
+## Стек
+Фронтенд:
+* React
+* Tailwind
+* Jotai
+* Framer Motion для анимаций, shadcn/ui для компонентов
+* Typescript
+
+Бэкенд:
+* Node.js
+* Nest.js
+* TypeScript
+* Prisma
+* PostgreSQL
 
 ## Сайт
 
