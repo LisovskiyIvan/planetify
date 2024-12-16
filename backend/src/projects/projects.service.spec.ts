@@ -75,7 +75,7 @@ describe('ProjectsService', () => {
         status: 'PUBLISHED',
         projectId: 1,
       };
-      const userId = 1
+      const userId = 1;
       await service.createPost(post, userId);
       expect(prisma.post.create).toHaveBeenCalledWith({
         data: {
@@ -124,8 +124,18 @@ describe('ProjectsService', () => {
 
   describe('updatePost', () => {
     it('should call prisma.post.update with correct oldPost and newPost data', async () => {
-      const oldPost: IOldPost = { id: 1, title: 'Old Post', content: 'Old Content', status: "Не закончено" };
-      const newPost: INewPost = { id: 1, title: 'New Post', content: 'New Content', status: "Закончено" };
+      const oldPost: IOldPost = {
+        id: 1,
+        title: 'Old Post',
+        content: 'Old Content',
+        status: 'Не закончено',
+      };
+      const newPost: INewPost = {
+        id: 1,
+        title: 'New Post',
+        content: 'New Content',
+        status: 'Закончено',
+      };
       await service.updatePost(oldPost, newPost);
       expect(prisma.post.update).toHaveBeenCalledWith({
         where: { id: oldPost.id },

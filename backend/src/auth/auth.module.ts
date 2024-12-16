@@ -9,7 +9,13 @@ import { AuthGuard } from './auth.guard';
 @Module({
   controllers: [AuthController],
   providers: [AuthService, AuthGuard, JwtService],
-  imports: [JwtModule.register({secret: process.env.PRIVATE_KEY || "SECRET", signOptions: {expiresIn: '100d'}}), UsersModule],
-  exports: [AuthGuard]
+  imports: [
+    JwtModule.register({
+      secret: process.env.PRIVATE_KEY || 'SECRET',
+      signOptions: { expiresIn: '100d' },
+    }),
+    UsersModule,
+  ],
+  exports: [AuthGuard],
 })
 export class AuthModule {}

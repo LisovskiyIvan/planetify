@@ -26,6 +26,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+
+  KanbanBoard KanbanBoard[]
 }
 
 model Project {
@@ -48,7 +50,41 @@ model Post {
 }
 
 
+model KanbanBoard {
+  id        Int             @id @default(autoincrement())
+  title     String
+  columns   KanbanColumn[]  @relation("BoardColumns")
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
+  KanbanColumn KanbanColumn[]
+}
 
+model KanbanColumn {
+  id       Int          @id @default(autoincrement())
+  title    String
+  position Int          // Для упорядочивания колонок
+  board    KanbanBoard  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId  Int
+  tasks    KanbanTask[] @relation("ColumnTasks")
 
+  KanbanBoard KanbanBoard[] @relation("BoardColumns")
+
+  KanbanTask KanbanTask[]
+}
+
+model KanbanTask {
+  id        Int          @id @default(autoincrement())
+  title     String
+  description String
+  position  Int          // Для упорядочивания задач
+  column    KanbanColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  columnId  Int
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  KanbanColumn KanbanColumn[] @relation("ColumnTasks")
+}
 

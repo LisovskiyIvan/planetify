@@ -5,17 +5,16 @@ import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('users')
 export class UsersController {
+  constructor(private usersService: UsersService) {}
 
-    constructor(private usersService: UsersService){}
+  @Post('/')
+  create(@Body() user: IUser) {
+    return this.usersService.createUser(user);
+  }
 
-    @Post('/')
-    create(@Body() user: IUser) {
-        return this.usersService.createUser(user)
-    }
-
-    @UseGuards(AuthGuard)
-    @Get('/')
-    getAll() {
-        return this.usersService.getUsers()
-    }
+  @UseGuards(AuthGuard)
+  @Get('/')
+  getAll() {
+    return this.usersService.getUsers();
+  }
 }

@@ -15,9 +15,7 @@ describe('AuthController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [
-        { provide: AuthService, useValue: mockAuthService },
-      ],
+      providers: [{ provide: AuthService, useValue: mockAuthService }],
     }).compile();
 
     authController = module.get<AuthController>(AuthController);
@@ -31,7 +29,11 @@ describe('AuthController', () => {
   describe('login', () => {
     it('should call AuthService.login and return a token', async () => {
       const user: IUser = { username: 'testuser', password: 'testpass' };
-      const mockTokenResponse = { token: 'testToken', username: 'testuser', id: '1' };
+      const mockTokenResponse = {
+        token: 'testToken',
+        username: 'testuser',
+        id: '1',
+      };
 
       mockAuthService.login.mockResolvedValue(mockTokenResponse);
 
@@ -45,7 +47,11 @@ describe('AuthController', () => {
   describe('registration', () => {
     it('should call AuthService.register and return a token', async () => {
       const user: IUser = { username: 'newuser', password: 'testpass' };
-      const mockRegisterResponse = { token: 'testToken', username: 'newuser', id: '2' };
+      const mockRegisterResponse = {
+        token: 'testToken',
+        username: 'newuser',
+        id: '2',
+      };
 
       mockAuthService.register.mockResolvedValue(mockRegisterResponse);
 

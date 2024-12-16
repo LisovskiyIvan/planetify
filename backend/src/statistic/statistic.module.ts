@@ -10,7 +10,13 @@ import { ProjectsModule } from 'src/projects/projects.module';
 
 @Module({
   controllers: [StatisticController],
-  providers: [StatisticService, JwtService, PrismaService, UsersService, ProjectsService],
-  imports: [UsersModule, ProjectsModule]
+  providers: [
+    StatisticService,
+    JwtService,
+    PrismaService,
+    UsersService,
+    ProjectsService,
+  ],
+  imports: [UsersModule, ProjectsModule],
 })
 export class StatisticModule {}

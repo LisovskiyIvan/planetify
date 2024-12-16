@@ -4,16 +4,15 @@ import { IUser } from 'src/users/users.model';
 
 @Controller('auth')
 export class AuthController {
+  constructor(private authService: AuthService) {}
 
-    constructor(private authService: AuthService){}
+  @Post('/login')
+  login(@Body() user: IUser) {
+    return this.authService.login(user);
+  }
 
-    @Post('/login')
-    login(@Body() user: IUser){
-        return this.authService.login(user)
-    }
-
-    @Post('/registration')
-    registration(@Body() user: IUser){
-        return this.authService.register(user)
-    }
+  @Post('/registration')
+  registration(@Body() user: IUser) {
+    return this.authService.register(user);
+  }
 }

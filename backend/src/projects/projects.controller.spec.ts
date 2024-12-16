@@ -28,9 +28,9 @@ describe('ProjectsController', () => {
         },
       ],
     })
-    .overrideGuard(AuthGuard) // Мокируем AuthGuard
-    .useValue({ canActivate: jest.fn().mockReturnValue(true) })
-    .compile();
+      .overrideGuard(AuthGuard) // Мокируем AuthGuard
+      .useValue({ canActivate: jest.fn().mockReturnValue(true) })
+      .compile();
 
     controller = module.get<ProjectsController>(ProjectsController);
     projectsService = module.get<ProjectsService>(ProjectsService);
@@ -44,7 +44,9 @@ describe('ProjectsController', () => {
     it('should call ProjectsService.getUserWithPostsAndProjects with correct userId', async () => {
       const userId = '1';
       await controller.getAllProjectsAndPosts({ userId });
-      expect(projectsService.getUserWithPostsAndProjects).toHaveBeenCalledWith(1);
+      expect(projectsService.getUserWithPostsAndProjects).toHaveBeenCalledWith(
+        1,
+      );
     });
   });
 
@@ -52,7 +54,10 @@ describe('ProjectsController', () => {
     it('should call ProjectsService.createProject with correct userId and title', async () => {
       const body = { userId: 1, title: 'New Project' };
       await controller.createProject(body);
-      expect(projectsService.createProject).toHaveBeenCalledWith(body.userId, body.title);
+      expect(projectsService.createProject).toHaveBeenCalledWith(
+        body.userId,
+        body.title,
+      );
     });
   });
 
@@ -95,8 +100,18 @@ describe('ProjectsController', () => {
 
   describe('updatePost', () => {
     it('should call ProjectsService.updatePost with correct oldPost and newPost', async () => {
-      const oldPost: IOldPost = { id: 1, title: 'Old Post', content: 'Old Content', status: "Не закончено" };
-      const newPost: INewPost = { id: 1, title: 'New Post', content: 'New Content', status: "Не закончено" };
+      const oldPost: IOldPost = {
+        id: 1,
+        title: 'Old Post',
+        content: 'Old Content',
+        status: 'Не закончено',
+      };
+      const newPost: INewPost = {
+        id: 1,
+        title: 'New Post',
+        content: 'New Content',
+        status: 'Не закончено',
+      };
       await controller.updatePost({ oldPost, newPost });
       expect(projectsService.updatePost).toHaveBeenCalledWith(oldPost, newPost);
     });

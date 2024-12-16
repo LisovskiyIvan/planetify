@@ -40,7 +40,7 @@ describe('AuthService', () => {
   describe('login', () => {
     it('should validate user and generate a token', async () => {
       const userDto = { username: 'testuser', password: 'testpass' };
-      const user ={
+      const user = {
         id: 1,
         username: 'testuser',
         password: 'hashedpass',
@@ -74,7 +74,10 @@ describe('AuthService', () => {
 
       const result = await authService['validateUser'](userDto);
       expect(usersService.getUserByName).toHaveBeenCalledWith(userDto.username);
-      expect(bcrypt.compare).toHaveBeenCalledWith(userDto.password, user.password);
+      expect(bcrypt.compare).toHaveBeenCalledWith(
+        userDto.password,
+        user.password,
+      );
       expect(result).toEqual(user);
     });
 
@@ -85,14 +88,19 @@ describe('AuthService', () => {
       mockUsersService.getUserByName.mockResolvedValue(user);
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(false);
 
-      await expect(authService['validateUser'](userDto)).rejects.toThrow(UnauthorizedException);
+      await expect(authService['validateUser'](userDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
     });
   });
 
   describe('register', () => {
     it('should return error if user already exists', async () => {
       const userDto = { username: 'existinguser', password: 'testpass' };
-      mockUsersService.getUserByName.mockResolvedValue({ id: 1, username: 'existinguser' });
+      mockUsersService.getUserByName.mockResolvedValue({
+        id: 1,
+        username: 'existinguser',
+      });
 
       const result = await authService.register(userDto);
 
