@@ -17,7 +17,7 @@ export function CreateProjectModal() {
 
   async function createProject() {
     if (!token) return;
-    if (title.length < 5) {
+    if (title.length < 3) {
       setError(true);
       return;
     }
@@ -89,7 +89,7 @@ export function CreateProjectModal() {
         </Button>
         {error && (
           <div className="text-black mb-4 text-lg text-center">
-            Название должно быть не менее 5 символов
+            Название должно быть не менее 3 символов
           </div>
         )}
       </motion.div>

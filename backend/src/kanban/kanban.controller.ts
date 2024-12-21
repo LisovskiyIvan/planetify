@@ -11,7 +11,7 @@ import {
 import { AuthGuard } from 'src/auth/auth.guard';
 import { KanbanService } from './kanban.service';
 
-@Controller('api/kanban')
+@Controller('kanban')
 export class KanbanController {
   constructor(private readonly kanbanService: KanbanService) {}
 
@@ -23,7 +23,7 @@ export class KanbanController {
 
   @UseGuards(AuthGuard)
   @Get(':userId/boards')
-  async getBoards(@Param('userId') userId: number) {
+  async getBoards(@Param('userId') userId: string) {
     return this.kanbanService.getBoards(userId);
   }
 
@@ -70,6 +70,12 @@ export class KanbanController {
     @Body() body: { title?: string; description?: string; position?: number },
   ) {
     return this.kanbanService.updateTask(id, body);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('delete-board/:id')
+  async deleteBoard(@Param('id') id: string) {
+    return this.kanbanService.deleteBoard(id);
   }
 
   @UseGuards(AuthGuard)

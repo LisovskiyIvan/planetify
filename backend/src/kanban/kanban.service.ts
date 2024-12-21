@@ -15,9 +15,9 @@ export class KanbanService {
   }
 
   // Получить все доски пользователя
-  async getBoards(userId: number) {
+  async getBoards(userId: string) {
     return await this.prisma.kanbanBoard.findMany({
-      where: { authorId: userId },
+      where: { authorId: parseInt(userId) },
       include: { columns: { include: { tasks: true } } },
     });
   }
@@ -60,6 +60,12 @@ export class KanbanService {
     });
   }
 
+  async deleteBoard(boardId: string) {
+    const id = parseInt(boardId);
+    return await this.prisma.kanbanBoard.delete({
+      where: { id },
+    });
+  }
   // Удалить колонку
   async deleteColumn(id: number) {
     return await this.prisma.kanbanColumn.delete({

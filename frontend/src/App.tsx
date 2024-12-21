@@ -7,6 +7,7 @@ import { User } from "./pages/User";
 import { Login } from "./pages/Login";
 import { Logout } from "./pages/Logout";
 import { Dashboard } from "./pages/Dashboard";
+import { Kanban } from "./pages/Kanban";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />}></Route>
           <Route path="/logout" element={<Logout />}></Route>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/kanban" element={<Kanban />}></Route>
         </Routes>
       </BrowserRouter>
     </>

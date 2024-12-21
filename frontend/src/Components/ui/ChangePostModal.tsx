@@ -33,7 +33,7 @@ export function ChangePostModal() {
 
   async function changePost() {
     if (!token) return;
-    if (title.length < 5 || !state) {
+    if (title.length < 3 || !state) {
       setError(true);
       return;
     } else setError(false);
@@ -142,7 +142,7 @@ export function ChangePostModal() {
         </div>
         {error && (
           <div className="text-black mb-4 text-lg text-center">
-            Название должно быть не менее 5 символов и статус заполнен
+            Название должно быть не менее 3 символов и статус заполнен
           </div>
         )}
       </motion.div>

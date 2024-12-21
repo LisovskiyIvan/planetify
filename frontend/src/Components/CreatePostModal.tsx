@@ -35,7 +35,7 @@ export function CreatePostModal() {
   };
 
   const createProject = async () => {
-    if (!token || title.length < 5 || !state) {
+    if (!token || title.length < 3 || !state) {
       setError(true);
       return;
     }
@@ -149,7 +149,7 @@ export function CreatePostModal() {
         </Button>
         {error && (
           <div className="text-black mb-4 text-lg text-center">
-            Название должно быть не менее 5 символов и статус заполнен
+            Название должно быть не менее 3 символов и статус заполнен
           </div>
         )}
       </motion.div>

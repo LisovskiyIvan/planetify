@@ -49,7 +49,6 @@ model Post {
   updatedAt DateTime @updatedAt
 }
 
-
 model KanbanBoard {
   id        Int             @id @default(autoincrement())
   title     String
@@ -58,33 +57,25 @@ model KanbanBoard {
   authorId  Int
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
-
-  KanbanColumn KanbanColumn[]
 }
 
 model KanbanColumn {
   id       Int          @id @default(autoincrement())
   title    String
-  position Int          // Для упорядочивания колонок
-  board    KanbanBoard  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  position Int
+  board    KanbanBoard  @relation("BoardColumns", fields: [boardId], references: [id], onDelete: Cascade)
   boardId  Int
   tasks    KanbanTask[] @relation("ColumnTasks")
-
-  KanbanBoard KanbanBoard[] @relation("BoardColumns")
-
-  KanbanTask KanbanTask[]
 }
 
 model KanbanTask {
-  id        Int          @id @default(autoincrement())
-  title     String
+  id          Int          @id @default(autoincrement())
+  title       String
   description String
-  position  Int          // Для упорядочивания задач
-  column    KanbanColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
-  columnId  Int
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-
-  KanbanColumn KanbanColumn[] @relation("ColumnTasks")
+  position    Int
+  column      KanbanColumn @relation("ColumnTasks", fields: [columnId], references: [id], onDelete: Cascade) // Обратное поле
+  columnId    Int
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 

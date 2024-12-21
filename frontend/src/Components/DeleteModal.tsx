@@ -4,10 +4,9 @@ import { Button } from "./ui/button";
 interface Props {
   title: string;
   deleteThing: (id: number) => void;
-  closeModal: (bool: boolean) => void;
+  closeModal: (boolean: boolean) => void;
   id: number;
 }
-
 export function DeleteModal({ title, deleteThing, closeModal, id }: Props) {
   return (
     <motion.div
