@@ -14,13 +14,12 @@ export const triggerAtom = atom(false);
 
 export const createBoardModalAtom = atom(false);
 export const createColumnModalAtom = atom({isOpen: false, boardId: 0, position: 0});
-export const createTaskModalAtom = atom(false);
-export const changeBoardModalAtom = atom(false);
+export const createTaskModalAtom = atom({isOpen: false, columnId: 0, position: 0});
 export const changeColumnModalAtom = atom(false);
 export const changeTaskModalAtom = atom(false);
 export const deleteBoardModalAtom = atom({isOpen: false, id: 0});
-export const deleteColumnModalAtom = atom(false);
-export const deleteTaskModalAtom = atom(false);
+export const deleteColumnModalAtom = atom({isOpen: false, id: 0});
+export const deleteTaskModalAtom = atom({isOpen: false, id: 0});
 export const triggerBoardAtom = atom(false);
 export const selectedTaskAtom = atom<ITask | undefined>(undefined);
 export const selectedColumnAtom = atom<number>(0);

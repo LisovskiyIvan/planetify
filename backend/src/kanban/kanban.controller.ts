@@ -49,10 +49,10 @@ export class KanbanController {
   async addTask(
     @Body()
     body: {
-      columnId: number;
+      columnId: string;
       title: string;
       description: string;
-      position: number;
+      position: string;
     },
   ) {
     return this.kanbanService.addTask(
@@ -80,13 +80,13 @@ export class KanbanController {
 
   @UseGuards(AuthGuard)
   @Delete('delete-column/:id')
-  async deleteColumn(@Param('id') id: number) {
+  async deleteColumn(@Param('id') id: string) {
     return this.kanbanService.deleteColumn(id);
   }
 
   @UseGuards(AuthGuard)
   @Delete('delete-task/:id')
-  async deleteTask(@Param('id') id: number) {
+  async deleteTask(@Param('id') id: string) {
     return this.kanbanService.deleteTask(id);
   }
 }

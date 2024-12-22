@@ -34,17 +34,17 @@ export class KanbanService {
   }
 
   async addTask(
-    columnId: number,
+    columnId: string,
     title: string,
     description: string,
-    position: number,
+    position: string,
   ) {
     return await this.prisma.kanbanTask.create({
       data: {
-        columnId,
+        columnId: parseInt(columnId),
         title,
         description,
-        position,
+        position: parseInt(position),
       },
     });
   }
@@ -60,23 +60,23 @@ export class KanbanService {
     });
   }
 
-  async deleteBoard(boardId: string) {
-    const id = parseInt(boardId);
+  async deleteBoard(id: string) {
     return await this.prisma.kanbanBoard.delete({
-      where: { id },
+      where: { id: parseInt(id) },
     });
   }
   // Удалить колонку
-  async deleteColumn(id: number) {
+  async deleteColumn(id: string) {
     return await this.prisma.kanbanColumn.delete({
-      where: { id },
+      where: { id: parseInt(id) },
     });
   }
 
   // Удалить задачу
-  async deleteTask(id: number) {
+  async deleteTask(id: string) {
+    const taskId = parseInt(id);
     return await this.prisma.kanbanTask.delete({
-      where: { id },
+      where: { id: taskId },
     });
   }
 }

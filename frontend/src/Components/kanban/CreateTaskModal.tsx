@@ -1,20 +1,16 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
+import { useAtom, useSetAtom } from "jotai";
+import { createTaskModalAtom, triggerBoardAtom } from "@/atoms/modalAtoms";
 
-export function CreateTaskModal({
-  setIsModalOpen,
-  columnId,
-}: {
-  setIsModalOpen: (open: boolean) => void;
-  columnId: number;
-}) {
+export function CreateTaskModal() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState(false);
-
   const token = localStorage.getItem("token");
-
+  const [createTaskModal, setIsModalOpen] = useAtom(createTaskModalAtom);
+  const setTrigger = useSetAtom(triggerBoardAtom);
   const createTask = async () => {
     if (!token) return;
     if (title.length < 3) {
@@ -22,23 +18,25 @@ export function CreateTaskModal({
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/kanban/create-task`, {
+    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/kanban/add-task`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        columnId,
+        columnId: createTaskModal.columnId,
         title,
         description,
+        position: createTaskModal.position,
       }),
     }).then((res) => res.json());
 
     if (res) {
-      setIsModalOpen(false);
+      setIsModalOpen({ isOpen: false, columnId: 0, position: 0 });
       setTitle("");
       setDescription("");
+      setTrigger((prev) => !prev);
     }
   };
 
@@ -56,14 +54,14 @@ export function CreateTaskModal({
       >
         <div
           className="absolute top-0 right-1 text-black text-5xl cursor-pointer"
-          onClick={() => setIsModalOpen(false)}
+          onClick={() => setIsModalOpen({ isOpen: false, columnId: 0, position: 0 })}
         >
           &times;
         </div>
         <div className="p-8 text-xl flex flex-col items-center w-[100%]">
           <label htmlFor="title" className="my-2 text-2xl">Название задачи</label>
           <input
-            className="w-[70%] p-2 rounded-lg text-black"
+            className="w-[70%] p-2 rounded-lg text-black border-2 border-black"
             type="text"
             id="title"
             value={title}
@@ -74,7 +72,7 @@ export function CreateTaskModal({
           />
           <label htmlFor="description" className="my-2 text-2xl">Описание задачи</label>
           <textarea
-            className="w-[70%] p-2 rounded-lg text-black"
+            className="w-[70%] p-2 rounded-lg text-black border-2 border-black"
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
