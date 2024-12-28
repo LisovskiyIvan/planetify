@@ -6,7 +6,7 @@ import { Signup } from "./pages/Signup";
 import { User } from "./pages/User";
 import { Login } from "./pages/Login";
 import { Logout } from "./pages/Logout";
-import { Dashboard } from "./pages/Dashboard";
+// import { Dashboard } from "./pages/Dashboard";
 import { Kanban } from "./pages/Kanban";
 import { Notes } from "./pages/Notes";
 
@@ -22,7 +22,7 @@ function App() {
           <Route path="user/:id" element={<User />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/logout" element={<Logout />}></Route>
-          <Route path="/dashboard" element={<Dashboard />}></Route>
+          {/* <Route path="/dashboard" element={<Dashboard />}></Route> */}
           <Route path="/kanban" element={<Kanban />}></Route>
           <Route path="/notes/:id" element={<Notes />}></Route>
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -36,12 +36,12 @@ export default function Navbar() {
               >
                 Заметки
               </Link>
-              <Link
+              {/* <Link
                 className="ml-2 text-sm sm:text-lg lg:text-xl 2xl:text-2xl sm:ml-6 2xl:ml-8 relative hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
                 to="/dashboard"
               >
                 Статистика
-              </Link>
+              </Link> */}
             </>
           )}
 

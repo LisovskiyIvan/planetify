@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import { IPost } from '@/pages/User'
+import { IPost } from '@/models'
 import { IBoard, ITask } from '@/models';
 
 
