@@ -24,6 +24,12 @@ export const deleteTaskModalAtom = atom({isOpen: false, id: 0});
 export const triggerBoardAtom = atom(false);
 export const selectedTaskAtom = atom<ITask | undefined>(undefined);
 export const selectedColumnAtom = atom<number>(0);
-export const selectedBoardAtom = atom<number | undefined>();
+export const selectedBoardAtom = atom<number | undefined>(
+  () => {
+    const params = new URLSearchParams(window.location.search);
+    const boardId = params.get('board');
+    return boardId ? parseInt(boardId) : undefined;
+  }
+);
 export const boardsAtom = atom<IBoard[]>([]);
 export const currentBoardAtom = atom<IBoard>((get) => get(boardsAtom).find((board) => board.id === get(selectedBoardAtom))!);

@@ -9,11 +9,9 @@ import {
   createBoardModalAtom,
   createColumnModalAtom,
   createTaskModalAtom,
-  currentBoardAtom,
   deleteBoardModalAtom,
   deleteColumnModalAtom,
   deleteTaskModalAtom,
-  selectedBoardAtom,
   triggerBoardAtom,
 } from "@/atoms/modalAtoms";
 import { Button } from "@/Components/ui/button";
@@ -24,20 +22,24 @@ import { CreateTaskModal } from "@/Components/kanban/CreateTaskModal";
 import { ChangeTaskModal } from "@/Components/kanban/ChangeTaskModal";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { useDelete } from "@/hooks/useDelete";
+import { useSearchParams } from "react-router-dom";
 
 export function Kanban() {
+  const [searchParams] = useSearchParams();
+  const boardId = searchParams.get("board");
   const [boards, setBoards] = useAtom(boardsAtom);
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useAtom(createBoardModalAtom);
   const triggerBoard = useAtomValue(triggerBoardAtom);
   const [deleteBoardModal, setDeleteBoard] = useAtom(deleteBoardModalAtom);
-  const selectedBoard = useAtomValue(selectedBoardAtom);
-  const currentBoard = useAtomValue(currentBoardAtom);
+  const selectedBoard = boardId ? parseInt(boardId) : undefined;
+  const currentBoard = boards.find(board => board.id === selectedBoard);
   const createColumnModal = useAtomValue(createColumnModalAtom);
   const [deleteColumnModal, setDeleteColumnModal] = useAtom(deleteColumnModalAtom);
   const createTaskModal = useAtomValue(createTaskModalAtom);
   const [deleteTaskModal, setDeleteTaskModal] = useAtom(deleteTaskModalAtom);
   const changeTaskModal = useAtomValue(changeTaskModalAtom);
   const {deleteBoard, deleteColumn, deleteTask} = useDelete();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("id");
@@ -63,63 +65,6 @@ export function Kanban() {
     fetchBoards();
   }, [triggerBoard, setBoards]);
 
-  // const deleteBoard = async (id: number) => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
-  //   if (id === 0) return;
-
-  //   const res = await fetch(
-  //     `/api/kanban/delete-board/${id}`,
-  //     {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   if (res.ok) {
-  //     setTriggerBoard((prev) => !prev);
-  //   }
-  // };
-
-  // const deleteColumn = async (id: number) => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
-  //   if (id === 0) return;
-
-  //   const res = await fetch(
-  //     `/api/kanban/delete-column/${id}`,
-  //     {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   if (res.ok) {
-  //     setTriggerBoard((prev) => !prev);
-  //   }
-  // };
-
-  // const deleteTask = async (id: number) => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) return;
-  //   if (id === 0) return;
-
-  //   const res = await fetch(
-  //     `/api/kanban/delete-task/${id}`,
-  //     {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   if (res.ok) {
-  //     setTriggerBoard((prev) => !prev);
-  //   }
-  // };
-  //TODO: сделать хук и просто передавать url в функцию
 
   function handleDragEnd(event: DragEndEvent) {
     const {active, over} = event;
@@ -127,14 +72,14 @@ export function Kanban() {
     
     const taskId = active.id;
     const newColumnId = over.id as number;
-    const oldColumnId = currentBoard.columns.find(column => 
+    const oldColumnId = currentBoard?.columns.find(column => 
       column.tasks.some(task => task.id === taskId)
     )?.id;
 
     if (!oldColumnId || oldColumnId === newColumnId) return;
 
-    const oldColumn = currentBoard.columns.find(col => col.id === oldColumnId);
-    const newColumn = currentBoard.columns.find(col => col.id === newColumnId);
+    const oldColumn = currentBoard?.columns.find(col => col.id === oldColumnId);
+    const newColumn = currentBoard?.columns.find(col => col.id === newColumnId);
     
     if (!oldColumn || !newColumn) return;
 

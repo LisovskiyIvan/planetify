@@ -1,28 +1,27 @@
 import {
   createColumnModalAtom,
-  currentBoardAtom,
   deleteBoardModalAtom,
-  selectedBoardAtom,
 } from "@/atoms/modalAtoms";
 import { IBoard } from "@/models";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import {  useSetAtom } from "jotai";
 import { Button } from "../ui/button";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function Board({ board }: { board: IBoard }) {
-  const [selectedBoard, setSelectedBoard] = useAtom(selectedBoardAtom);
   const setDeleteBoard = useSetAtom(deleteBoardModalAtom);
-  const currentBoard = useAtomValue(currentBoardAtom);
   const setCreateColumnModal = useSetAtom(createColumnModalAtom);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const boardId = parseInt(searchParams.get("board") || "0");
   return (
     <div
-      className="bg-black text-white rounded-lg flex justify-between items-baseline shadow-md p-4 w-80 cursor-pointer"
-      style={
-        selectedBoard === board.id
-          ? { backgroundColor: "white", color: "black" }
-          : {}
-      }
+      className={`rounded-lg flex justify-between items-baseline shadow-md p-4 w-80 cursor-pointer ${
+        boardId === board.id 
+          ? "bg-white text-black"
+          : "bg-black text-white"
+      }`}
       onClick={() => {
-        setSelectedBoard(board.id)
+        navigate(`?board=${board.id}`);
       }}
     >
       <h2 className="text-xl font-semibold">{board.title}</h2>
@@ -32,8 +31,8 @@ export function Board({ board }: { board: IBoard }) {
         onClick={() =>
           setCreateColumnModal({
             isOpen: true,
-            boardId: selectedBoard!,
-            position: currentBoard?.columns.length || 0,
+            boardId: board.id,
+            position: board.columns.length,
           })
         }
       >
@@ -42,7 +41,7 @@ export function Board({ board }: { board: IBoard }) {
       <div
         className="text-3xl cursor-pointer  hover:scale-125 duration-200"
         style={
-          selectedBoard === board.id ? { color: "black" } : { color: "white" }
+          boardId === board.id ? { color: "black" } : { color: "white" }
         }
         onClick={() => setDeleteBoard({ isOpen: true, id: board.id })}
       >
