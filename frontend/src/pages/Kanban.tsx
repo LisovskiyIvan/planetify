@@ -5,6 +5,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { CreateBoardModal } from "../Components/kanban/CreateBoardModal";
 import {
   boardsAtom,
+  changeTaskModalAtom,
   createBoardModalAtom,
   createColumnModalAtom,
   createTaskModalAtom,
@@ -20,21 +21,20 @@ import { DeleteModal } from "@/Components/DeleteModal";
 import { Column } from "@/Components/kanban/Column";
 import { CreateColumnModal } from "@/Components/kanban/CreateColumnModal";
 import { CreateTaskModal } from "@/Components/kanban/CreateTaskModal";
+import { ChangeTaskModal } from "@/Components/kanban/ChangeTaskModal";
 
 export function Kanban() {
   const [boards, setBoards] = useAtom(boardsAtom);
-  const [isCreateBoardOpen, setIsCreateBoardOpen] =
-    useAtom(createBoardModalAtom);
+  const [isCreateBoardOpen, setIsCreateBoardOpen] = useAtom(createBoardModalAtom);
   const [triggerBoard, setTriggerBoard] = useAtom(triggerBoardAtom);
   const [deleteBoardModal, setDeleteBoard] = useAtom(deleteBoardModalAtom);
   const selectedBoard = useAtomValue(selectedBoardAtom);
   const currentBoard = useAtomValue(currentBoardAtom);
   const createColumnModal = useAtomValue(createColumnModalAtom);
-  const [deleteColumnModal, setDeleteColumnModal] = useAtom(
-    deleteColumnModalAtom
-  );
+  const [deleteColumnModal, setDeleteColumnModal] = useAtom(deleteColumnModalAtom);
   const createTaskModal = useAtomValue(createTaskModalAtom);
   const [deleteTaskModal, setDeleteTaskModal] = useAtom(deleteTaskModalAtom);
+  const changeTaskModal = useAtomValue(changeTaskModalAtom);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -44,7 +44,7 @@ export function Kanban() {
 
     const fetchBoards = async () => {
       const res = await fetch(
-        `${import.meta.env.VITE_DEV_URL}/kanban/${userId}/boards`,
+        `/api/kanban/${userId}/boards`,
         {
           method: "GET",
           headers: {
@@ -67,7 +67,7 @@ export function Kanban() {
     if (id === 0) return;
 
     const res = await fetch(
-      `${import.meta.env.VITE_DEV_URL}/kanban/delete-board/${id}`,
+      `/api/kanban/delete-board/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -86,7 +86,7 @@ export function Kanban() {
     if (id === 0) return;
 
     const res = await fetch(
-      `${import.meta.env.VITE_DEV_URL}/kanban/delete-column/${id}`,
+      `/api/kanban/delete-column/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -105,7 +105,7 @@ export function Kanban() {
     if (id === 0) return;
 
     const res = await fetch(
-      `${import.meta.env.VITE_DEV_URL}/kanban/delete-task/${id}`,
+      `/api/kanban/delete-task/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -136,17 +136,21 @@ export function Kanban() {
             Создать новую доску
           </Button>
         </div>
-        <div className="flex gap-10 px-10">
-          {selectedBoard !== undefined ? (
+        <div className="flex gap-10 px-10 w-full" style={selectedBoard && currentBoard && currentBoard.columns.length === 0 ? {justifyContent: "center"} : {justifyContent: "flex-start"}}>
+          {selectedBoard  && currentBoard ? (
             currentBoard.columns.length > 0 ? (
               boards
                 .find((board) => board.id === selectedBoard)
-                ?.columns?.map((column) => (
+                ?.columns.map((column) => (
                   <Column key={column.id} column={column} />
                 ))
             ) : (
-              <div className="text-3xl">
-                <p>Упс, кажется вы еще не создали колонки</p>
+              <div className="flex max-h-[30%] content-center w-3/6 flex-col items-center justify-center p-8 bg-white/20 backdrop-blur-sm rounded-xl shadow-lg text-3xl text-white">
+                <svg className="w-20 h-20 mb-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p className="text-center">Упс, кажется вы еще не создали колонки!</p>
+                <p className="mt-2 text-xl text-white/80">Добавьте первую колонку, чтобы начать работу</p>
               </div>
             )
           ) : null}
@@ -180,6 +184,7 @@ export function Kanban() {
           id={deleteTaskModal.id}
         />
       )}
+      {changeTaskModal.isOpen && <ChangeTaskModal />}
     </div>
   );
 }

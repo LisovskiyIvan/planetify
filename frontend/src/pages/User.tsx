@@ -37,7 +37,7 @@ export function User() {
     async function getData() {
       if (!tokenRef.current) navigate("/login");
       const data = await fetch(
-        `${import.meta.env.VITE_DEV_URL}/projects/${idRef.current}`,
+        `/api/projects/${idRef.current}`,
         {
           method: "GET",
           headers: {

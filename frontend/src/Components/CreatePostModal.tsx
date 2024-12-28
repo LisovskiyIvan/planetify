@@ -44,11 +44,9 @@ export function CreatePostModal() {
     const id = localStorage.getItem("id");
     if (!id) return;
 
-    const res = await fetch(
-      `${import.meta.env.VITE_DEV_URL}/projects/create/post`,
-      {
-        method: "POST",
-        headers: {
+    const res = await fetch(`/api/projects/create/post`, {
+      method: "POST",
+      headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },

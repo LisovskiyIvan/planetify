@@ -1,10 +1,11 @@
-import { deleteTaskModalAtom } from "@/atoms/modalAtoms";
+import { changeTaskModalAtom, deleteTaskModalAtom } from "@/atoms/modalAtoms";
 import { ITask } from "@/models";
 import { useSetAtom } from "jotai";
 
 export function Task({ task }: { task: ITask }) {
 
   const setDeleteTask = useSetAtom(deleteTaskModalAtom);
+  const setChangeTaskModal = useSetAtom(changeTaskModalAtom);
 
   return (
     <div className=" p-4 rounded-md mb-2 border border-black ">
@@ -13,7 +14,7 @@ export function Task({ task }: { task: ITask }) {
         <div className="flex gap-4">
           <div
             className="text-2xl hover:scale-110 duration-300 cursor-pointer"
-            onClick={() => {}}
+            onClick={() => setChangeTaskModal({isOpen: true, task: task})}
           >
             &#9997;
           </div>

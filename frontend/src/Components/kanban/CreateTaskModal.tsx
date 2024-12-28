@@ -18,7 +18,7 @@ export function CreateTaskModal() {
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/kanban/add-task`, {
+    const res = await fetch(`/api/kanban/add-task`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

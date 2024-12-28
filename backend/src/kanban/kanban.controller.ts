@@ -66,7 +66,7 @@ export class KanbanController {
   @UseGuards(AuthGuard)
   @Put('update-task/:id')
   async updateTask(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() body: { title?: string; description?: string; position?: number },
   ) {
     return this.kanbanService.updateTask(id, body);

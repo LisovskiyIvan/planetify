@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/button";
-import { ChangePostModal } from "./ui/ChangePostModal";
+import { ChangePostModal } from "./ChangePostModal";
 import { DeleteModal } from "./DeleteModal";
 import {
   changePostModalAtom,
@@ -55,15 +55,12 @@ export function Task({ data }: Props) {
 
   const handleDeletePost = async (id: number | undefined) => {
     if (!id || !token) return;
-    const res = await fetch(
-      `${import.meta.env.VITE_DEV_URL}/projects/post/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    ).then((r) => r.json());
+    const res = await fetch(`/api/projects/post/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((r) => r.json());
     trigger((prev) => !prev);
 
     if (!res) return;

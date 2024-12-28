@@ -51,11 +51,11 @@ export class KanbanService {
 
   // Обновить задачу
   async updateTask(
-    id: number,
+    id: string,
     data: { title?: string; description?: string; position?: number },
   ) {
     return await this.prisma.kanbanTask.update({
-      where: { id },
+      where: { id: parseInt(id) },
       data,
     });
   }

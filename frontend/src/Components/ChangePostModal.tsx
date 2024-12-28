@@ -1,5 +1,5 @@
 import { IPost } from "@/pages/User";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 import {
   Select,
   SelectContent,
@@ -8,7 +8,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "./select";
+} from "./ui/select";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -23,12 +23,12 @@ export function ChangePostModal() {
   const setChangeModal = useSetAtom(changePostModalAtom);
   const [title, setTitle] = useState(postData?.title || "");
   const [error, setError] = useState(false);
-  const [token] = useState(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   const [description, setDescription] = useState(postData?.content || "");
   const [state, setState] = useState(postData?.status || "");
   const trigger = useSetAtom(triggerAtom);
   const handleSelect = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault(); // предотвращает действие по умолчанию
+    event.preventDefault();
   };
 
   async function changePost() {
@@ -38,7 +38,7 @@ export function ChangePostModal() {
       return;
     } else setError(false);
 
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/post`, {
+    const res = await fetch(`/api/projects/post`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

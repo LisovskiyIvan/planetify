@@ -45,7 +45,7 @@ export function Statistic() {
 
       try {
         const [resData, jokeData] = await Promise.all([
-          fetch(`${import.meta.env.VITE_DEV_URL}/statistic/all/${id}`, {
+          fetch(`/api/statistic/all/${id}`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,

@@ -21,7 +21,9 @@ export function Board({ board }: { board: IBoard }) {
           ? { backgroundColor: "white", color: "black" }
           : {}
       }
-      onClick={() => setSelectedBoard(board.id)}
+      onClick={() => {
+        setSelectedBoard(board.id)
+      }}
     >
       <h2 className="text-xl font-semibold">{board.title}</h2>
       <div className="flex gap-4">

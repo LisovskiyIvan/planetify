@@ -19,7 +19,7 @@ export function CreateBoardModal() {
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/kanban/create-board`, {
+    const res = await fetch(`/api/kanban/create-board`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

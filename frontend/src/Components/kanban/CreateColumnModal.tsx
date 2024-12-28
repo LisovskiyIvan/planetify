@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
-import { useAtom } from "jotai";
-import { createColumnModalAtom } from "@/atoms/modalAtoms";
+import { useAtom, useSetAtom } from "jotai";
+import { createColumnModalAtom, triggerBoardAtom } from "@/atoms/modalAtoms";
 
 export function CreateColumnModal() {
   const [title, setTitle] = useState("");
   const [error, setError] = useState(false);
   const [createColumnModal, setCreateColumnModal] = useAtom(createColumnModalAtom);
   const token = localStorage.getItem("token");
+  const setTriggerBoard = useSetAtom(triggerBoardAtom);
 
   const createColumn = async () => {
     if (!token) return;
@@ -17,7 +18,7 @@ export function CreateColumnModal() {
       return;
     }
 
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/kanban/add-column`, {
+    const res = await fetch(`/api/kanban/add-column`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,6 +34,7 @@ export function CreateColumnModal() {
     if (res) {
       setCreateColumnModal({ isOpen: false, boardId: 0, position: 0});
       setTitle("");
+      setTriggerBoard(prev => !prev);
     }
   };
 

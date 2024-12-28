@@ -26,7 +26,7 @@ export function CreateProjectModal() {
     if (id) id = parseInt(id);
     else return;
 
-    const res = await fetch(`${import.meta.env.VITE_DEV_URL}/projects/create`, {
+    const res = await fetch(`/api/projects/create`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
