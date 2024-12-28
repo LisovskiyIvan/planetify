@@ -33,7 +33,7 @@ export function Board({ board }: { board: IBoard }) {
           setCreateColumnModal({
             isOpen: true,
             boardId: selectedBoard!,
-            position: currentBoard.columns.length,
+            position: currentBoard?.columns.length || 0,
           })
         }
       >

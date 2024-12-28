@@ -3,10 +3,17 @@ import { IColumn, ITask } from "@/models";
 import { Button } from "../ui/button";
 import { useSetAtom } from "jotai";
 import { createTaskModalAtom, deleteColumnModalAtom } from "@/atoms/modalAtoms";
+import {  useDroppable } from "@dnd-kit/core";
+
+
 export function Column({ column }: { column: IColumn }) {
 
   const setDeleteColumnModal = useSetAtom(deleteColumnModalAtom);
   const setCreateTaskModal = useSetAtom(createTaskModalAtom);
+
+
+
+  const {setNodeRef} = useDroppable({id: column.id});
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md flex-grow-0 min-h-[200px] h-fit min-w-[350px]">
@@ -16,7 +23,7 @@ export function Column({ column }: { column: IColumn }) {
         >
           &times;
         </div></div>
-      <div className="mt-4 flex flex-col gap-2">
+      <div className="mt-4 flex flex-col gap-2" ref={setNodeRef}>
         {column.tasks.map((task: ITask) => (
           <Task key={task.id} task={task} />
         ))}

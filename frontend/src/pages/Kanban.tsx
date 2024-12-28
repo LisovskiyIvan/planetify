@@ -22,11 +22,13 @@ import { Column } from "@/Components/kanban/Column";
 import { CreateColumnModal } from "@/Components/kanban/CreateColumnModal";
 import { CreateTaskModal } from "@/Components/kanban/CreateTaskModal";
 import { ChangeTaskModal } from "@/Components/kanban/ChangeTaskModal";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { useDelete } from "@/hooks/useDelete";
 
 export function Kanban() {
   const [boards, setBoards] = useAtom(boardsAtom);
   const [isCreateBoardOpen, setIsCreateBoardOpen] = useAtom(createBoardModalAtom);
-  const [triggerBoard, setTriggerBoard] = useAtom(triggerBoardAtom);
+  const triggerBoard = useAtomValue(triggerBoardAtom);
   const [deleteBoardModal, setDeleteBoard] = useAtom(deleteBoardModalAtom);
   const selectedBoard = useAtomValue(selectedBoardAtom);
   const currentBoard = useAtomValue(currentBoardAtom);
@@ -35,7 +37,7 @@ export function Kanban() {
   const createTaskModal = useAtomValue(createTaskModalAtom);
   const [deleteTaskModal, setDeleteTaskModal] = useAtom(deleteTaskModalAtom);
   const changeTaskModal = useAtomValue(changeTaskModalAtom);
-
+  const {deleteBoard, deleteColumn, deleteTask} = useDelete();
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("id");
@@ -61,64 +63,123 @@ export function Kanban() {
     fetchBoards();
   }, [triggerBoard, setBoards]);
 
-  const deleteBoard = async (id: number) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    if (id === 0) return;
+  // const deleteBoard = async (id: number) => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+  //   if (id === 0) return;
 
-    const res = await fetch(
-      `/api/kanban/delete-board/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (res.ok) {
-      setTriggerBoard((prev) => !prev);
-    }
-  };
+  //   const res = await fetch(
+  //     `/api/kanban/delete-board/${id}`,
+  //     {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+  //   if (res.ok) {
+  //     setTriggerBoard((prev) => !prev);
+  //   }
+  // };
 
-  const deleteColumn = async (id: number) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    if (id === 0) return;
+  // const deleteColumn = async (id: number) => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+  //   if (id === 0) return;
 
-    const res = await fetch(
-      `/api/kanban/delete-column/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (res.ok) {
-      setTriggerBoard((prev) => !prev);
-    }
-  };
+  //   const res = await fetch(
+  //     `/api/kanban/delete-column/${id}`,
+  //     {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+  //   if (res.ok) {
+  //     setTriggerBoard((prev) => !prev);
+  //   }
+  // };
 
-  const deleteTask = async (id: number) => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    if (id === 0) return;
+  // const deleteTask = async (id: number) => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) return;
+  //   if (id === 0) return;
 
-    const res = await fetch(
-      `/api/kanban/delete-task/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (res.ok) {
-      setTriggerBoard((prev) => !prev);
-    }
-  };
+  //   const res = await fetch(
+  //     `/api/kanban/delete-task/${id}`,
+  //     {
+  //       method: "DELETE",
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+  //   if (res.ok) {
+  //     setTriggerBoard((prev) => !prev);
+  //   }
+  // };
   //TODO: сделать хук и просто передавать url в функцию
 
+  function handleDragEnd(event: DragEndEvent) {
+    const {active, over} = event;
+    if (!over) return;
+    
+    const taskId = active.id;
+    const newColumnId = over.id as number;
+    const oldColumnId = currentBoard.columns.find(column => 
+      column.tasks.some(task => task.id === taskId)
+    )?.id;
+
+    if (!oldColumnId || oldColumnId === newColumnId) return;
+
+    const oldColumn = currentBoard.columns.find(col => col.id === oldColumnId);
+    const newColumn = currentBoard.columns.find(col => col.id === newColumnId);
+    
+    if (!oldColumn || !newColumn) return;
+
+    const task = oldColumn.tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    const updatedOldColumn = {
+      ...oldColumn,
+      tasks: oldColumn.tasks.filter(t => t.id !== taskId)
+    };
+
+    const updatedNewColumn = {
+      ...newColumn, 
+      tasks: [...newColumn.tasks, {...task, columnId: newColumnId}]
+    };
+
+    setBoards(prevBoards => prevBoards.map(board =>
+      board.id === selectedBoard
+        ? {
+            ...board,
+            columns: board.columns.map(col => {
+              if (col.id === oldColumnId) return updatedOldColumn;
+              if (col.id === newColumnId) return updatedNewColumn;
+              return col;
+            })
+          }
+        : board
+    ));
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    fetch(`/api/kanban/update-task/${taskId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        columnId: newColumnId
+      })
+    });
+  }
+
+  
   return (
     <div className="w-[100%] min-h-[100dvh] bg-gradient-to-r from-indigo-500 via-blue-500 to-purple-500 flex flex-col">
       <Navbar />
@@ -136,6 +197,7 @@ export function Kanban() {
             Создать новую доску
           </Button>
         </div>
+        <DndContext onDragEnd={handleDragEnd}>
         <div className="flex gap-10 px-10 w-full" style={selectedBoard && currentBoard && currentBoard.columns.length === 0 ? {justifyContent: "center"} : {justifyContent: "flex-start"}}>
           {selectedBoard  && currentBoard ? (
             currentBoard.columns.length > 0 ? (
@@ -155,6 +217,7 @@ export function Kanban() {
             )
           ) : null}
         </div>
+        </DndContext>
       </div>
 
       {isCreateBoardOpen && <CreateBoardModal />}
