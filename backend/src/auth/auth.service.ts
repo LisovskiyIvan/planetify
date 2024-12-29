@@ -19,6 +19,11 @@ export class AuthService {
 
   async validateUser(userDto: IUser) {
     const user = await this.userService.getUserByName(userDto.username);
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Такого пользователя не существует',
+      });
+    }
     const passwordEauals = await bcrypt.compare(
       userDto.password,
       user.password,

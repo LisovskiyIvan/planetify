@@ -33,6 +33,12 @@ export default function SignupForm({ url, btnName }: Props) {
           password: password,
         }),
       });
+      
+      if (response.status === 401) {
+        setError("Неверные учетные данные");
+        return;
+      }
+
       const data: IResponse = await response.json();
       if (data.error) {
         setError(data.error);
@@ -43,8 +49,8 @@ export default function SignupForm({ url, btnName }: Props) {
       localStorage.setItem("id", data.id);
       localStorage.setItem("username", data.username);
       navigate("/");
-    } catch (error) {
-      console.error(error);
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : "Произошла неизвестная ошибка");
     }
   };
 

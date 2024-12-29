@@ -22,6 +22,8 @@ export interface IBoard {
   title: string;
   userId: number;
   columns: IColumn[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 
@@ -31,6 +33,8 @@ export interface IColumn {
   title: string;
   position: number;
   tasks: ITask[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ITask {
@@ -39,4 +43,6 @@ export interface ITask {
   title: string;
   description: string;
   position: number;
+  createdAt: string;
+  updatedAt: string;
 }

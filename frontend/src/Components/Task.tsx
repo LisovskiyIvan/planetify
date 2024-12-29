@@ -15,6 +15,7 @@ import {
 } from "@/atoms/modalAtoms";
 import { useAtom, useSetAtom } from "jotai";
 import { IData, IPost } from "@/models";
+import { motion } from "framer-motion";
 
 interface Props {
   data: IData;
@@ -35,7 +36,7 @@ export function Task({ data }: Props) {
   const handleDeleteProject = async () => {
     if (!token) return;
     const res = await fetch(
-      `${import.meta.env.VITE_DEV_URL}/projects/${data.id}`,
+      `/api/projects/${data.id}`,
       {
         method: "DELETE",
         headers: {
@@ -98,9 +99,12 @@ export function Task({ data }: Props) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {data.posts.map((value) => {
+        {data.posts.map((value, index) => {
           return (
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 + index * 0.1, ease: "easeInOut" }}
               className="space-y-1 space-x-3 flex my-4 justify-between"
               key={value.id}
             >
@@ -137,7 +141,7 @@ export function Task({ data }: Props) {
                   &times;
                 </div>
               </div>
-            </div>
+            </motion.div>
           );
         })}
         <div className="flex justify-center">

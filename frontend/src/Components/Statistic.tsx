@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Card } from "./ui/Card";
 import { Progress } from "./ui/progress";
 import { Badge } from "./ui/badge";
-import animationData from "@/assets/idea.json";
-import Lottie from "lottie-react";
+import { KanbanStats } from "./KanbanStats";
+import { boardsAtom } from "@/atoms/modalAtoms";
+import { useAtom } from "jotai";
 import { StatisticSkeleton } from "./StatisticSketeton";
-import { Skeleton } from "./ui/skeleton";
 
 interface IStatistic {
   currentPosts: number;
@@ -16,23 +16,19 @@ interface IStatistic {
   mediumPriorityPosts: number;
   lowPriorityPosts: number;
 }
-interface IJoke {
-  type: string;
-  setup: string;
-  punchline: string;
-  id: number;
-}
+// interface IJoke {
+//   type: string;
+//   setup: string;
+//   punchline: string;
+//   id: number;
+// }
 
 export function Statistic() {
   const [data, setData] = useState<IStatistic>();
   const id = localStorage.getItem("id");
   const token = localStorage.getItem("token");
-  const [joke, setJoke] = useState<IJoke>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isHover, setIsHover] = useState(false);
-
-  const handleMouseEnter = () => setIsHover(true);
-  const handleMouseLeave = () => setIsHover(false);
+  const [boards, setBoards] = useAtom(boardsAtom);
 
   useEffect(() => {
     async function getData() {
@@ -44,21 +40,38 @@ export function Statistic() {
       setIsLoading(true);
 
       try {
-        const [resData, jokeData] = await Promise.all([
-          fetch(`/api/statistic/all/${id}`, {
+        if (boards.length === 0) {
+          const [resData, resBoards] = await Promise.all([
+            fetch(`/api/statistic/all/${id}`, {
+              method: "GET", 
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }),
+            fetch(`/api/kanban/${id}/boards`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+          ]);
+
+          if (resData.ok && resBoards.ok) {
+            setData(await resData.json());
+            setBoards(await resBoards.json());
+          }
+        } else {
+          const resData = await fetch(`/api/statistic/all/${id}`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }).then((res) => res.json()),
-          fetch("https://official-joke-api.appspot.com/jokes/random").then(
-            (res) => res.json()
-          ),
-        ]);
-
-        setData(resData);
-        setJoke(jokeData);
-      } catch (error) {
+          });
+          if (resData.ok) {
+            setData(await resData.json());
+          }
+        }
+      } catch (error: unknown) {
         console.error("Error fetching data:", error);
       } finally {
         setIsLoading(false);
@@ -66,19 +79,19 @@ export function Statistic() {
     }
 
     getData();
-  }, [id, token]);
+  }, [id, token, boards.length, setBoards]);
 
   function getRandomColor() {
-    switch (Math.floor(Math.random() * 5) + 1) {
-      case 1:
+    switch (Math.floor(Math.random() * 5)) {
+      case 0:
         return "bg-lime-500";
-      case 2:
+      case 1:
         return "bg-emerald-500";
-      case 3:
+      case 2:
         return "bg-cyan-400";
-      case 4:
+      case 3:
         return "bg-sky-500";
-      case 5:
+      case 4:
         return "bg-indigo-500";
     }
   }
@@ -136,41 +149,43 @@ export function Statistic() {
             <Card className="bg-black text-white h-[400px] flex flex-col justify-around px-[3%] py-5 rounded-xl mt-5 ">
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
-                  Количество срочных заданий{" "}
-                  {((data.highPriorityPosts / data.currentPosts) * 100).toFixed(
-                    0
-                  )}
-                  %
+                  Срочных заданий{" "}
+                  {data.currentPosts === 0
+                    ? "нет"
+                    : ((data.highPriorityPosts / data.currentPosts) * 100).toFixed(0) + "%"}
                 </h3>
                 <Progress
-                  value={(data.highPriorityPosts / data.currentPosts) * 100}
+                  value={data.currentPosts === 0 
+                    ? 0 
+                    : (data.highPriorityPosts / data.currentPosts) * 100}
                   className={`${getRandomColor()}`}
                 ></Progress>
               </div>
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
-                  Количество заданий средней важности{" "}
-                  {(
-                    (data.mediumPriorityPosts / data.currentPosts) *
-                    100
-                  ).toFixed(0)}
-                  %
+                  Средней важности{" "}
+                  {data.currentPosts === 0
+                    ? "нет"
+                    : ((data.mediumPriorityPosts / data.currentPosts) * 100).toFixed(0) + "%"}
                 </h3>
                 <Progress
-                  value={(data.mediumPriorityPosts / data.currentPosts) * 100}
+                  value={data.currentPosts === 0
+                    ? 0
+                    : (data.mediumPriorityPosts / data.currentPosts) * 100}
                   className={`${getRandomColor()}`}
                 ></Progress>
               </div>
               <div className="w-[100%] pr-3">
                 <h3 className="text-xl mb-3">
-                  Количество заданий низкой важности{" "}
-                  {((data.lowPriorityPosts / data.currentPosts) * 100).toFixed(
-                    0
-                  )}
-                  %
+                  Низкой важности{" "}
+                  {data.currentPosts === 0
+                    ? "нет"
+                    : ((data.lowPriorityPosts / data.currentPosts) * 100).toFixed(0) + "%"}
                 </h3>
                 <Progress
-                  value={(data.lowPriorityPosts / data.currentPosts) * 100}
+                  value={data.currentPosts === 0
+                    ? 0
+                    : (data.lowPriorityPosts / data.currentPosts) * 100}
                   className={`${getRandomColor()}`}
                 ></Progress>
               </div>
@@ -178,28 +193,9 @@ export function Statistic() {
           </div>
         </div>
       )}
-      {joke && (
         <div className="sm:w-[40%]  bg-blue px-[3%]">
-          <Card className="bg-black text-white h-[100%]  w-[100%] rounded-xl my-5 py-5 flex flex-col items-center">
-            <Lottie animationData={animationData}></Lottie>
-            <div className="text-xl  text-center mt-20 px-3">{joke.setup}</div>
-            {isHover ? (
-              <div
-                onMouseLeave={handleMouseLeave}
-                className="text-lg text-center mt-10 w-[50%]"
-              >
-                {joke.punchline}
-              </div>
-            ) : (
-              <Skeleton
-                onMouseEnter={handleMouseEnter}
-                onTouchStart={handleMouseEnter}
-                className="mt-10  w-[50%] h-[20px]"
-              />
-            )}
-          </Card>
+        <KanbanStats />
         </div>
-      )}
     </div>
   );
 }
