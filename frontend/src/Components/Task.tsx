@@ -91,7 +91,7 @@ export function Task({ data }: Props) {
         <CardTitle className="text-3xl flex justify-between">
           {data.title}
           <div
-            className="text-3xl hover:scale-120 duration-300 cursor-pointer"
+            className="text-3xl hover:scale-110 duration-300 cursor-pointer"
             onClick={handleDeleteProjectModal}
           >
             &times;
@@ -127,7 +127,7 @@ export function Task({ data }: Props) {
                   {value.status}
                 </Badge>
               </div>
-              <div className="flex">
+              <div className="flex gap-2">
                 <div
                   className="text-2xl hover:scale-110 duration-300 cursor-pointer"
                   onClick={() => handleChangePostModal(value)}
@@ -135,7 +135,7 @@ export function Task({ data }: Props) {
                   &#9997;
                 </div>
                 <div
-                  className="text-3xl hover:scale-120 duration-300 cursor-pointer"
+                  className="text-3xl hover:scale-110 duration-300 cursor-pointer"
                   onClick={() => handleDeletePostModal(value)}
                 >
                   &times;
