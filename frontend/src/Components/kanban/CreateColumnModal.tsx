@@ -13,7 +13,7 @@ export function CreateColumnModal() {
 
   const createColumn = async () => {
     if (!token) return;
-    if (title.length < 3) {
+    if (title.length < 3 || title.length > 25) {
       setError(true);
       return;
     }
@@ -74,7 +74,7 @@ export function CreateColumnModal() {
         </Button>
         {error && (
           <div className="text-black mb-4 text-lg text-center">
-            Название должно быть не менее 3 символов
+            Название должно быть не менее 3 символов и не более 25 символов
           </div>
         )}
       </motion.div>

@@ -70,26 +70,7 @@ export function KanbanStats() {
     return `${day}.${month}`;
   };
 
-  const formatWord = (word: string, count: number) => {
-    switch (count) {
-      case 1:
-        return word + "а ";
-      case 2:
-      case 3:
-      case 4:
-        return word + "и ";
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-      case 10:
-      case 0:
-        return word + "ь";
-      default:
-        return word + "ов";
-    }
-  };
+
 
   return (
     <Card className="bg-black text-white h-[100%]  w-[100%] rounded-xl my-5 flex flex-col items-center px-5 py-10">
@@ -132,21 +113,15 @@ export function KanbanStats() {
           <ul className="mt-2 text-teal-400">
             <li className="text-sm md:text-xl">
               {stats.topColumns.length > 0 &&
-                `1. ${stats.topColumns[0]?.title}: ${
-                  stats.topColumns[0]?.taskCount + formatWord(" задач", stats.topColumns[0]?.taskCount)
-                }`}{" "}
+                `1. ${stats.topColumns[0]?.title}`}
             </li>
             <li className="text-sm md:text-xl">
               {stats.topColumns.length > 1 &&
-                `2. ${stats.topColumns[1]?.title}: ${
-                  stats.topColumns[1]?.taskCount + formatWord(" задач", stats.topColumns[1]?.taskCount)
-                }`}{" "}
+                `2. ${stats.topColumns[1]?.title}`}
             </li>
             <li className="text-sm md:text-xl">
               {stats.topColumns.length > 2 &&
-                `3. ${stats.topColumns[2]?.title}: ${
-                  stats.topColumns[2]?.taskCount + formatWord(" задач", stats.topColumns[2]?.taskCount)
-                }`}{" "}
+                `3. ${stats.topColumns[2]?.title}`}
             </li>
           </ul>
         </div>

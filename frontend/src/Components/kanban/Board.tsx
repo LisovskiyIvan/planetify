@@ -18,7 +18,7 @@ export function Board({ board }: { board: IBoard }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 + board.id * 0.1, ease: "easeInOut" }}
+      transition={{ duration: 0.5 + board.id * 0.1, ease: "easeInOut" }}  
       className={`rounded-lg flex justify-between items-baseline shadow-md p-4 w-80 cursor-pointer ${
         boardId === board.id 
           ? "bg-white text-black"
@@ -28,7 +28,7 @@ export function Board({ board }: { board: IBoard }) {
         navigate(`?board=${board.id}`);
       }}
     >
-      <h2 className="text-xl font-semibold">{board.title}</h2>
+      <h2 className="text-xl font-semibold break-words">{board.title}</h2>
       <div className="flex gap-4">
       <Button
         className="text-2xl bg-black text-white cursor-pointer hover:scale-105 duration-200 transition-all"

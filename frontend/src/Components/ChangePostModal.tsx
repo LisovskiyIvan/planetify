@@ -1,4 +1,4 @@
-import { IPost } from "@/pages/User";
+import { IPost } from "@/models";
 import { Button } from "./ui/button";
 import {
   Select,

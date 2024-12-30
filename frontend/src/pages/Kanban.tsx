@@ -148,7 +148,7 @@ export function Kanban() {
         </div>
         <DndContext onDragEnd={handleDragEnd}>
           <div
-            className="flex gap-10 px-2 sm:px-10 w-full overflow-x-auto flex-col lg:flex-row"
+            className="flex gap-6 px-2 sm:px-10 w-full overflow-x-auto flex-col lg:flex-row"
             style={
               selectedBoard && currentBoard && currentBoard.columns.length === 0
                 ? { justifyContent: "center" }

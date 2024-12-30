@@ -2,9 +2,8 @@ import { changeTaskModalAtom, deleteTaskModalAtom } from "@/atoms/modalAtoms";
 import { ITask } from "@/models";
 import { useSetAtom } from "jotai";
 import { useDraggable } from "@dnd-kit/core";
-import { motion } from "framer-motion";
 
-export function Task({ task, index }: { task: ITask, index: number }) {
+export function Task({ task }: { task: ITask }) {
   const setDeleteTask = useSetAtom(deleteTaskModalAtom);
   const setChangeTaskModal = useSetAtom(changeTaskModalAtom);
   const {attributes, listeners, setNodeRef, transform} = useDraggable({id: task.id});
@@ -20,14 +19,11 @@ export function Task({ task, index }: { task: ITask, index: number }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 + index * 0.1, ease: "easeInOut" }}
+    <div
       className="p-4 rounded-md mb-2 border border-black" ref={setNodeRef} style={{transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined}} {...attributes} {...listeners}>
       <div className="flex justify-between">
         <h4 className="text-3xl">{task.title}</h4>
-        <div className="flex gap-4">
+        <div className="flex gap-2 ">
           <button
             className="text-2xl hover:scale-110 duration-300 cursor-pointer"
             onPointerDown={handleChange}
@@ -35,7 +31,7 @@ export function Task({ task, index }: { task: ITask, index: number }) {
             &#9997;
           </button>
           <button
-            className="text-3xl cursor-pointer hover:scale-125 duration-200"
+            className="text-4xl cursor-pointer hover:scale-125 duration-200"
             onPointerDown={handleDelete}
           >
             &times;
@@ -43,6 +39,6 @@ export function Task({ task, index }: { task: ITask, index: number }) {
         </div>
       </div>
       <p className="px-2 py-2 text-xl">{task.description}</p>
-    </motion.div>
+    </div>
   );
 }

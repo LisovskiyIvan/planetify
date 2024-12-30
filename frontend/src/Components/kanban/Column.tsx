@@ -29,8 +29,8 @@ export function Column({ column, index }: { column: IColumn, index: number }) {
           &times;
         </div></div>
       <div className="mt-4 flex flex-col gap-2" ref={setNodeRef}>
-        {column.tasks.map((task: ITask, index: number) => (
-          <Task key={task.id} task={task} index={index} />
+        {column.tasks.map((task: ITask) => (
+          <Task key={task.id} task={task} />
         ))}
         <Button className="mt-4" onClick={() => setCreateTaskModal({isOpen: true, columnId: column.id, position: column.tasks.length})}>Добавить задачу</Button>
       </div>
