@@ -57,13 +57,13 @@ export default function Navbar() {
             <>
               <Link
                 to={`/user/${userId}`}
-                className="m-1 sm:mr-4 2xl:mr-6  text-md sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+                className="m-1 sm:mr-4 2xl:mr-6  text-sm sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
               >
                 {user}
               </Link>
               <Link
                 to={`/logout`}
-                className="m-1 sm:mr-4 2xl:mr-6  text-md sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+                className="m-1 sm:mr-4 2xl:mr-6  text-sm sm:text-lg  lg:text-xl 2xl:text-2xl hover:scale-110 duration-300 after:bg-white after:absolute after:h-0.5 after:w-0 after:bottom-0 after:left-0 hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
               >
                 Выйти
               </Link>

@@ -73,7 +73,7 @@ export function KanbanStats() {
 
 
   return (
-    <Card className="bg-black text-white h-[100%]  w-[100%] rounded-xl my-5 flex flex-col items-center px-5 py-10">
+    <Card className="bg-black text-white w-[100%] rounded-xl my-5 flex flex-col items-center px-5 py-10">
       <h2 className="text-2xl font-bold mb-5">Немного статистики</h2>
 
       <div className="grid grid-cols-2 gap-6 w-full">

@@ -79,7 +79,7 @@ export function Statistic() {
     }
 
     getData();
-  }, [id, token, boards.length, setBoards]);
+  }, []);
 
   function getRandomColor() {
     switch (Math.floor(Math.random() * 5)) {
@@ -105,7 +105,7 @@ export function Statistic() {
             <Card className="bg-black flex justify-between text-white h-[200px] rounded-xl my-5 p-5">
               <div className="flex flex-col items-center justify-around">
                 <h3 className="text-sm sm:text-md md:text-lg xl:text-xl">
-                  Всего проектов
+                  Всего заметок
                 </h3>
                 <Badge
                   className={` w-12 h-12 md:w-16 md:h-16 flex justify-center text-2xl text-black hover:bg-black hover:text-white hover:border-white duration-300 ${getRandomColor()}`}
@@ -125,7 +125,7 @@ export function Statistic() {
               </div>
               <div className="flex flex-col items-center justify-around">
                 <h3 className="text-sm sm:text-md md:text-lg xl:text-xl">
-                  Сейчас проектов
+                  Сейчас заметок
                 </h3>
                 <Badge
                   className={` w-12 h-12 md:w-16 md:h-16 flex justify-center text-2xl text-black hover:bg-black hover:text-white hover:border-white  duration-300 ${getRandomColor()}`}

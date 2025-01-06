@@ -41,7 +41,7 @@ export function CreateColumnModal() {
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-black flex items-center justify-center z-50">
       <motion.div
-        className="w-[95%] sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] 2xl:w-[25%] rounded-md bg-white text-black relative flex flex-col items-center"
+        className="w-[95%] sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] 2xl:w-[30%] rounded-md bg-white text-black relative flex flex-col items-center"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{

@@ -20,7 +20,7 @@ export function Column({ column, index }: { column: IColumn, index: number }) {
       initial={{ opacity: 0,  x: -100 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 + index * 0.1, ease: "easeInOut" }}
-      className="bg-white p-4 rounded-lg shadow-md flex-grow-0 min-h-[200px] h-fit min-w-[350px]"
+      className="bg-white p-4 rounded-lg shadow-md flex-grow-0 min-h-[200px] h-fit w-[320px] sm:w-[350px]"
     >
       <div className="flex justify-between"><h3 className="text-2xl font-semibold">{column.title}</h3><div
           className="text-3xl cursor-pointer  hover:scale-125 duration-200"

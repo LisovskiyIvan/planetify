@@ -43,7 +43,7 @@ export function CreateTaskModal() {
   return (
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-black flex items-center justify-center z-50">
       <motion.div
-        className="w-[95%] sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] 2xl:w-[25%] rounded-md bg-white text-black relative flex flex-col items-center"
+        className="w-[95%] sm:w-[70%] md:w-[60%] lg:w-[50%] xl:w-[30%] 2xl:w-[30%] rounded-md bg-white text-black relative flex flex-col items-center"
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{
@@ -61,7 +61,7 @@ export function CreateTaskModal() {
         <div className="p-8 text-xl flex flex-col items-center w-[100%]">
           <label htmlFor="title" className="my-2 text-2xl">Название задачи</label>
           <input
-            className="w-[70%] p-2 rounded-lg text-black border-2 border-black"
+            className="w-[85%] p-2 rounded-lg text-black border-2 border-black"
             type="text"
             id="title"
             value={title}
@@ -72,7 +72,7 @@ export function CreateTaskModal() {
           />
           <label htmlFor="description" className="my-2 text-2xl">Описание задачи</label>
           <textarea
-            className="w-[70%] p-2 rounded-lg text-black border-2 border-black"
+            className="w-[90%] p-2 rounded-lg text-black border-2 border-black"
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}

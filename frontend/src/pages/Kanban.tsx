@@ -135,7 +135,7 @@ export function Kanban() {
       <h1 className="text-5xl mt-10 ml-20">Мои доски</h1>
 
       <div className="flex mt-10 px-5 flex-grow flex-col lg:flex-row">
-        <div className="flex flex-col items-center flex-wrap gap-4 p-4 w-full lg:w-auto">
+        <div className="flex flex-col items-center flex-wrap gap-4 py-4 lg:w-auto">
           {boards.map((board) => (
             <Board key={board.id} board={board} />
           ))}
@@ -143,12 +143,12 @@ export function Kanban() {
             onClick={() => setIsCreateBoardOpen(true)}
             className="bg-black  w-auto text-xl text-white p-2 rounded-md hover:bg-white hover:text-black hover:scale-105 duration-300 transition-all"
           >
-            Создать новую доску
+            Создать доску
           </Button>
         </div>
         <DndContext onDragEnd={handleDragEnd}>
           <div
-            className="flex gap-6 px-2 sm:px-10 w-full overflow-x-auto flex-col lg:flex-row"
+            className="flex gap-4 sm:px-10 w-full flex-wrap flex-col lg:flex-row items-center sm:items-start"
             style={
               selectedBoard && currentBoard && currentBoard.columns.length === 0
                 ? { justifyContent: "center" }

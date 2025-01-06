@@ -95,7 +95,7 @@ export default function SignupForm({ url, btnName }: Props) {
         </div>
         <Button
           type="submit"
-          className=" w-[70%] xl:w-[50%] 2xl:w-[23%] text-2xl flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium text-white bg-rose-600 hover:bg-rose-700 hover:scale-105 duration-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
+          className="w-fit text-2xl flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium text-white bg-rose-600 hover:bg-rose-700 hover:scale-105 duration-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500"
         >
           {btnName}
         </Button>

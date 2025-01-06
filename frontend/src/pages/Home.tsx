@@ -15,11 +15,11 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="w-[100%] bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-500">
-      <div className="min-h-[100dvh] pb-10">
+    <div className="w-[100%] min-h-screen bg-gradient-to-r from-purple-500 via-blue-500 to-indigo-500">
+      <div className="pb-8">
         <Navbar></Navbar>
-        <div className="mt-20 xl:mt-[50px] 2xl:mt-[10vh] flex flex-col md:flex-row justify-around items-center">
-          <div className="w-[50%]">
+        <div className="mt-20 xl:mt-[50px] 2xl:mt-[0vh] flex flex-col md:flex-row justify-around items-center">
+          <div className="w-[85%] sm:w-[70%] xl:w-[50%] ">
             <div className="w-[100%] flex justify-center items-center">
               <Planet></Planet>
             </div>
