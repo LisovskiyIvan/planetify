@@ -24,7 +24,7 @@ export default function SignupForm({ url, btnName }: Props) {
   const navigate = useNavigate();
 
   const validateForm = () => {
-      if (name.length < 3) {
+      if (btnName === "Регистрация" && name.length < 3) {
         setValidationError("Имя должно содержать не менее 3 символов");
         return false;
       }
@@ -38,7 +38,7 @@ export default function SignupForm({ url, btnName }: Props) {
       }
     setValidationError("");
     return true;
-  };
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
