@@ -49,6 +49,7 @@ export class AuthService {
     const user = await this.userService.createUser({
       username: userDto.username,
       password: hashedPassword,
+      email: userDto.email,
     });
     return this.generateToken(user);
   }
@@ -56,7 +57,7 @@ export class AuthService {
     const payload = { username: userDto.username };
     return {
       token: this.jwtService.sign(payload, { secret: process.env.PRIVATE_KEY }),
-      username: userDto.username,
+      username: userDto.email,
       id: userDto.id.toString(),
     };
   }

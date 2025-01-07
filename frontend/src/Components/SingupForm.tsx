@@ -7,6 +7,7 @@ interface IResponse {
   id: string;
   username: string;
   error?: string;
+  email: string;
 }
 
 interface Props {
@@ -18,24 +19,60 @@ export default function SignupForm({ url, btnName }: Props) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [validationError, setValidationError] = useState("");
   const navigate = useNavigate();
+
+  const validateForm = () => {
+      if (name.length < 3) {
+        setValidationError("Имя должно содержать не менее 3 символов");
+        return false;
+      }
+      if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+        setValidationError("Неверный формат email");
+        return false;
+      }
+      if (password.length < 8) {
+        setValidationError("Пароль должен содержать не менее 8 символов");
+        return false;
+      }
+    setValidationError("");
+    return true;
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: name,
-          password: password,
-        }),
+        body: JSON.stringify(
+          btnName === "Войти" 
+            ? {
+                username: email,
+                password: password,
+              }
+            : {
+                username: email,
+                password: password,
+                email: name,
+              }
+        ),
       });
       
       if (response.status === 401) {
         setError("Неверные учетные данные");
+        return;
+      }
+      if (response.status === 500) {
+        setError("Неизвестная ошибка");
         return;
       }
 
@@ -61,21 +98,39 @@ export default function SignupForm({ url, btnName }: Props) {
     >
       <div className="w-[100%] flex min-h-[400px] bg-black text-white rounded-lg justify-center items-center text-3xl flex-col py-[25px]">
         <h1>Planetify</h1>
-
+          <div className="w-[85%] my-6">
+            <label htmlFor="email" className="block text-sm xl:text-lg text-gray-700">
+              Email
+            </label>
+            <input
+              type="text"
+              name="email"
+              id="email"
+              autoComplete="off"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="block w-full px-4 py-3 mt-1 text-gray-900  bg-white text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm xl:text-lg"
+            />
+          </div>
+        {btnName === "Регистрация" ? (
         <div className="w-[85%] my-6">
-          <label htmlFor="name" className="block text-sm xl:text-lg text-gray-700">
+          <label
+            htmlFor="username"
+            className="block text-sm xl:text-lg text-gray-700"
+          >
             Username
           </label>
           <input
             type="text"
-            name="name"
-            id="name"
+            name="username"
+            id="username"
             autoComplete="off"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="block w-full px-4 py-3 mt-1 text-gray-900  bg-white text-black border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm xl:text-lg"
           />
         </div>
+        ) : null}
         <div className="w-[85%] mb-6">
           <label
             htmlFor="password"
@@ -99,7 +154,8 @@ export default function SignupForm({ url, btnName }: Props) {
         >
           {btnName}
         </Button>
-        <div className="mt-4 text-center">{error}</div>
+        {validationError && <div className="mt-4 text-center text-red-500">{validationError}</div>}
+        {error && <div className="mt-4 text-center text-red-500">{error}</div>}
       </div>
     </form>
   );

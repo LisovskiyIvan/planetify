@@ -18,6 +18,7 @@ datasource db {
 model User {
   id    Int     @id @default(autoincrement())
   username String  @unique
+  email String  @default("")
   password  String 
   projects     Project[]  
   paid_user Boolean @default(false)
@@ -25,7 +26,6 @@ model User {
   all_posts Int @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
 
   KanbanBoard KanbanBoard[]
 }

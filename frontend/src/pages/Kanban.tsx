@@ -135,7 +135,7 @@ export function Kanban() {
       <h1 className="text-5xl mt-10 ml-20">Мои доски</h1>
 
       <div className="flex mt-10 px-5 flex-grow flex-col lg:flex-row">
-        <div className="flex flex-col items-center flex-wrap gap-4 py-4 lg:w-auto">
+        <div className="flex flex-col items-center flex-wrap gap-4 py-4 lg:min-w-[12%]">
           {boards.map((board) => (
             <Board key={board.id} board={board} />
           ))}
