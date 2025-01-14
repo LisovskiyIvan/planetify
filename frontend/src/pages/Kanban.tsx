@@ -136,8 +136,8 @@ export function Kanban() {
 
       <div className="flex mt-10 px-5 flex-grow flex-col lg:flex-row">
         <div className="flex flex-col items-center flex-wrap gap-4 py-4 lg:min-w-[12%]">
-          {boards.map((board) => (
-            <Board key={board.id} board={board} />
+          {boards.map((board, index) => (
+            <Board key={board.id} board={board} index={index} />
           ))}
           <Button
             onClick={() => setIsCreateBoardOpen(true)}

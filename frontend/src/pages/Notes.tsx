@@ -27,7 +27,7 @@ export function Notes() {
   const params = useParams();
   const id = params.id;
   const navigate = useNavigate();
-  const [token] = useState(localStorage.getItem("token"));
+  const token = localStorage.getItem("token")
   const [data, setData] = useState<IData[]>();
   const setCreateProjectModal = useSetAtom(createProjectModalAtom);
   const [trigger, setTrigger] = useAtom(triggerAtom);

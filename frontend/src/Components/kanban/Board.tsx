@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
-export function Board({ board }: { board: IBoard }) {
+export function Board({ board, index }: { board: IBoard, index: number }) {
   const setDeleteBoard = useSetAtom(deleteBoardModalAtom);
   const setCreateColumnModal = useSetAtom(createColumnModalAtom);
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export function Board({ board }: { board: IBoard }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 + board.id * 0.1, ease: "easeInOut" }}  
+      transition={{ duration: 0.5 + index * 0.1, ease: "easeInOut" }}  
       className={`rounded-lg flex justify-between items-baseline shadow-md p-4 w-80 cursor-pointer ${
         boardId === board.id 
           ? "bg-white text-black"
