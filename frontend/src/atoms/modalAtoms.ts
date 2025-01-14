@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import { IPost } from '@/models'
+import { IData, IPost } from '@/models'
 import { IBoard, ITask } from '@/models';
 
 
@@ -9,7 +9,7 @@ export const changePostModalAtom = atom(false);
 export const deletePostModalAtom = atom(false);
 export const deleteProjectModalAtom = atom(false);
 export const selectedPostAtom = atom<IPost | undefined>(undefined);
-export const selectedProjectIdAtom = atom<number>(0);
+export const selectedProjectAtom = atom<IData | undefined>(undefined);
 export const triggerAtom = atom(false);
 
 

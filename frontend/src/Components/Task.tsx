@@ -1,17 +1,14 @@
-import { useState } from "react";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { Button } from "./ui/button";
 import { ChangePostModal } from "./ChangePostModal";
-import { DeleteModal } from "./DeleteModal";
 import {
   changePostModalAtom,
   createPostModalAtom,
   deletePostModalAtom,
   deleteProjectModalAtom,
   selectedPostAtom,
-  selectedProjectIdAtom,
-  triggerAtom,
+  selectedProjectAtom,
 } from "@/atoms/modalAtoms";
 import { useAtom, useSetAtom } from "jotai";
 import { IData, IPost } from "@/models";
@@ -22,64 +19,32 @@ interface Props {
 }
 
 export function Task({ data }: Props) {
-  const [token] = useState(localStorage.getItem("token"));
-  const [deletePostModal, setDeletePostModal] = useAtom(deletePostModalAtom);
-  const [deleteProjectModal, setDeleteProjectModal] = useAtom(
-    deleteProjectModalAtom
-  );
+  const setDeletePostModal = useSetAtom(deletePostModalAtom);
+  const setDeleteProjectModal = useSetAtom(deleteProjectModalAtom);
   const [changeModal, setChangeModal] = useAtom(changePostModalAtom);
-  const [postData, setPostData] = useAtom<IPost | undefined>(selectedPostAtom);
-  const setProjectId = useSetAtom(selectedProjectIdAtom);
   const setPostModal = useSetAtom(createPostModalAtom);
-  const trigger = useSetAtom(triggerAtom);
+  const setSelectedProject = useSetAtom(selectedProjectAtom);
+  const setSelectedPost = useSetAtom(selectedPostAtom);
 
-  const handleDeleteProject = async () => {
-    if (!token) return;
-    const res = await fetch(
-      `/api/projects/${data.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    ).then((r) => r.json());
-    trigger((prev) => !prev);
-
-    if (!res) return;
-  };
-
-  const handleAddPost = (projectId: number) => {
-    setProjectId(projectId);
+  const handleAddPost = (data: IData) => {
+    setSelectedProject(data);
     setPostModal((prev) => !prev);
   };
 
-  const handleDeletePost = async (id: number | undefined) => {
-    if (!id || !token) return;
-    const res = await fetch(`/api/projects/post/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((r) => r.json());
-    trigger((prev) => !prev);
-
-    if (!res) return;
-  };
-
+ 
   const handleDeletePostModal = (v: IPost) => {
     setDeletePostModal(true);
-    setPostData(v);
+    setSelectedPost(v);
   };
 
   const handleChangePostModal = (v: IPost) => {
     setChangeModal(true);
-    setPostData(v);
+    setSelectedPost(v);
   };
 
   const handleDeleteProjectModal = () => {
     setDeleteProjectModal(true);
-    setProjectId(data.id);
+    setSelectedProject(data);
   };
 
   return (
@@ -147,28 +112,12 @@ export function Task({ data }: Props) {
         <div className="flex justify-center">
           <Button
             className="rounded-[100%] text-black mt-4 mb-1 bg-white active:bg-slate hover:scale-110 duration-300 transition-all"
-            onClick={() => handleAddPost(data.id)}
+            onClick={() => handleAddPost(data)}
           >
             +
           </Button>
         </div>
       </CardContent>
-      {deletePostModal && (
-        <DeleteModal
-          title={postData?.title || ""}
-          deleteThing={handleDeletePost}
-          closeModal={setDeletePostModal}
-          id={postData?.id || 0}
-        />
-      )}
-      {deleteProjectModal && (
-        <DeleteModal
-          title={data.title}
-          deleteThing={handleDeleteProject}
-          closeModal={setDeleteProjectModal}
-          id={data.id}
-        />
-      )}
       {changeModal && <ChangePostModal />}
     </Card>
   );

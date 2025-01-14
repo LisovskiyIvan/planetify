@@ -12,7 +12,7 @@ import {
 import { motion } from "framer-motion";
 import {
   createPostModalAtom,
-  selectedProjectIdAtom,
+  selectedProjectAtom,
   triggerAtom,
 } from "@/atoms/modalAtoms";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -24,7 +24,7 @@ export function CreatePostModal() {
   const [token] = useState(localStorage.getItem("token"));
   const [description, setDescription] = useState("");
   const [state, setState] = useState("");
-  const projectId = useAtomValue(selectedProjectIdAtom);
+  const project = useAtomValue(selectedProjectAtom);
   const trigger = useSetAtom(triggerAtom);
 
   if (!postModal) return null;
@@ -53,7 +53,7 @@ export function CreatePostModal() {
         body: JSON.stringify({
           title: title,
           content: description,
-          projectId: projectId,
+          projectId: project?.id,
           status: state,
           userId: parseInt(id),
         }),
