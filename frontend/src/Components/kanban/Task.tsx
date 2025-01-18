@@ -6,7 +6,10 @@ import { useDraggable } from "@dnd-kit/core";
 export function Task({ task }: { task: ITask }) {
   const setDeleteTask = useSetAtom(deleteTaskModalAtom);
   const setChangeTaskModal = useSetAtom(changeTaskModalAtom);
-  const {attributes, listeners, setNodeRef, transform} = useDraggable({id: task.id});
+  const {attributes, listeners, setNodeRef, transform} = useDraggable({
+    id: task.id,
+    data: task
+  });
 
   const handleDelete = (e: React.PointerEvent) => {
     e.stopPropagation();
@@ -18,9 +21,21 @@ export function Task({ task }: { task: ITask }) {
     setChangeTaskModal({isOpen: true, task: task});
   };
 
+  const style = transform ? {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    zIndex: 100,
+    position: 'relative' as const,
+    pointerEvents: 'auto' as const
+  } : undefined;
+
   return (
     <div
-      className="p-4 rounded-md mb-2 border border-black" ref={setNodeRef} style={{transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined}} {...attributes} {...listeners}>
+      className="p-4 rounded-md mb-2 border border-black backdrop-blur-sm bg-white/30" 
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+    >
       <div className="flex justify-between">
         <h4 className="text-3xl">{task.title}</h4>
         <div className="flex gap-2 ">
